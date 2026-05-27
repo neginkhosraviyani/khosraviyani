@@ -4,7 +4,7 @@
 
 import type { PlaceholderDesign } from '../content/placeholders';
 
-export type Section = 'photos' | 'textbooks' | 'algo' | 'paper';
+export type Section = 'ai' | 'miniature' | 'graphic' | 'other';
 
 export function slugFromPath(path: string): string {
   // e.g. ../content/photos/sf-street/page.json -> "sf-street"
@@ -69,10 +69,10 @@ export function buildPlaceholderPattern(design: PlaceholderDesign): string {
 }
 
 export function placeholderDescription(section: Section): string {
-  if (section === 'photos') return 'Catalog placeholder for an unreleased photo series.';
-  if (section === 'textbooks') return 'Catalog placeholder for an unreleased textbook sculpture volume.';
-  if (section === 'paper') return 'Catalog placeholder for an unreleased paper work.';
-  return 'Catalog placeholder for an unreleased project.';
+  if (section === 'ai') return 'کارت زمان‌بند برای مجموعهٔ هوش مصنوعی در حال آماده‌سازی.';
+  if (section === 'miniature') return 'کارت زمان‌بند برای مجموعهٔ نگارگری و گل و مرغ در حال آماده‌سازی.';
+  if (section === 'graphic') return 'کارت زمان‌بند برای مجموعهٔ گرافیک در حال آماده‌سازی.';
+  return 'کارت زمان‌بند برای مجموعه‌ای در حال آماده‌سازی.';
 }
 
 export function rationalToNumber(value: any): number | undefined {

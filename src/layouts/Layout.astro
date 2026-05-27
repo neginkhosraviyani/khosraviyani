@@ -2,7 +2,6 @@
 // src/layouts/Layout.astro
 import NavBar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
-import GalleryNav from "../components/GalleryNav.astro";
 import { withBase } from "../scripts/paths";
 import "../styles/global.css";
 
@@ -10,16 +9,20 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  lang?: 'fa' | 'en';
 }
 
-const SITE_TITLE = "Morris Aguilar — Artist Portfolio";
-const SITE_DESCRIPTION = "Portfolio of Morris Aguilar — photography, sculpture, generative art, and paper works exploring structure, knowledge, and form.";
+const SITE_TITLE = "نگین خسرویانی";
+const SITE_DESCRIPTION = "پورتفولیوی نگین خسرویانی — هوش مصنوعی، نگارگری و گل و مرغ، طراحی گرافیک و آثار دیگر.";
 
 const {
   title = SITE_TITLE,
   description = SITE_DESCRIPTION,
   ogImage,
+  lang = 'fa',
 } = Astro.props;
+
+const dir = lang === 'fa' ? 'rtl' : 'ltr';
 
 const canonicalUrl = Astro.site
   ? new URL(Astro.url.pathname, Astro.site).href
@@ -31,11 +34,11 @@ const defaultOgImage = Astro.site
 const resolvedOgImage = ogImage || defaultOgImage;
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang} dir={dir}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#FFFFFF" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
@@ -50,289 +53,13 @@ const resolvedOgImage = ogImage || defaultOgImage;
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href={withBase("/favicon.svg")} />
     <slot name="head" />
-    <!-- Prefetch helper (runs on every page) -->
-    <script>
-      import "../scripts/prefetch";
-      import "../scripts/media-visibility";
-      import "../scripts/keyboard-nav";
-    </script>
-    <style>
-      :root {
-        --page-bg: #000;
-        --page-gutter: clamp(1rem, 4vw, 2.75rem);
-        color-scheme: dark;
-      }
-      html, body {
-        background: var(--page-bg);
-        background-color: var(--page-bg);
-        transition: background-color 600ms ease;
-        min-height: 100%;
-      }
-      body {
-        min-height: 100vh;
-        min-height: 100dvh;
-        color: CanvasText;
-        font-family: var(--body-font, system-ui, -apple-system, Segoe UI, Roboto, sans-serif);
-      }
-      .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--page-gutter) 4rem; }
-      .skip { position:absolute; left:-9999px; }
-      .skip:focus { left: 12px; top: 12px; background:#fff; color:#000; padding:.5rem .75rem; border-radius:.5rem; z-index:999; }
-    </style>
   </head>
   <body>
-    <a class="skip" href="#main">Skip to content</a>
+    <a class="skip" href="#main">رفتن به محتوا</a>
     <NavBar />
-    <GalleryNav />
-    <div id="main" class="container">
+    <main id="main" class="container">
       <slot />
-    </div>
+    </main>
     <Footer />
-    <script is:inline define:vars={{ layoutDebug: import.meta.env.DEV }}>
-      (() => {
-        if (!layoutDebug) return;
-        const logTitleFont = () => {
-          const title = document.querySelector('.project-hero__title');
-          if (!title) return;
-          const capture = (label = 'immediate') => {
-            const cs = getComputedStyle(title);
-            const sampleChar = title.querySelector('.split-char');
-            const charFont = sampleChar ? getComputedStyle(sampleChar).fontFamily : 'n/a';
-            console.info('[title-font-debug]', {
-              path: location.pathname,
-              label,
-              font: cs.fontFamily,
-              weight: cs.fontWeight,
-              charFont,
-              revealed: title.classList.contains('is-revealed'),
-              text: title.textContent?.trim().slice(0, 80),
-            });
-          };
-          capture('immediate');
-          if (document.fonts?.ready) {
-            document.fonts.ready.then(() => capture('after-fonts-ready'));
-          }
-        };
-        const logTitleFill = () => {
-          const title = document.querySelector('.project-hero__title');
-          if (!title) return;
-          const cs = getComputedStyle(title);
-          console.info('[title-fill-debug]', {
-            path: location.pathname,
-            data: { ...title.dataset },
-            inline: title.getAttribute('style'),
-            cssVar: cs.getPropertyValue('--title-fill'),
-            bgImage: cs.backgroundImage,
-          });
-        };
-        const logCaptionFill = () => {
-          const caption = document.querySelector('.media-caption');
-          if (!caption) return;
-          const cs = getComputedStyle(caption);
-          const firstChar = caption.querySelector('.split-char');
-          const textFill = cs.getPropertyValue('-webkit-text-fill-color') || 'n/a';
-          console.info('[caption-fill-debug]', {
-            path: location.pathname,
-            textSample: caption.textContent?.trim().slice(0, 80),
-            classes: caption.className,
-            cssVar: cs.getPropertyValue('--caption-fill'),
-            bgImage: cs.backgroundImage,
-            color: cs.color,
-            textFill,
-          });
-          if (firstChar) {
-            const charStyles = getComputedStyle(firstChar);
-            const charTextFill = charStyles.getPropertyValue('-webkit-text-fill-color') || 'n/a';
-            console.info('[caption-fill-debug:char]', {
-              bgImage: charStyles.backgroundImage,
-              color: charStyles.color,
-              textFill: charTextFill,
-            });
-          }
-        };
-        const logMediaAttribution = () => {
-          const blocks = Array.from(document.querySelectorAll('.media-block'));
-          if (!blocks.length) return;
-          const summary = blocks.map((block) => {
-            const attribution = block.querySelector('.media-attribution')?.textContent?.trim() ?? '';
-            let mediaSrc = '';
-            const img = block.querySelector('img');
-            if (img instanceof HTMLImageElement) {
-              mediaSrc = img.currentSrc || img.src || '';
-            }
-            if (!mediaSrc) {
-              const video = block.querySelector('video');
-              if (video instanceof HTMLVideoElement) {
-                mediaSrc = video.currentSrc || video.src || '';
-                if (!mediaSrc) {
-                  const source = video.querySelector('source');
-                  mediaSrc = source?.src || source?.getAttribute?.('src') || '';
-                }
-                if (!mediaSrc) {
-                  mediaSrc = video.getAttribute('poster') || '';
-                }
-              }
-            }
-            if (!mediaSrc) {
-              const model = block.querySelector('model-viewer');
-              mediaSrc = model?.getAttribute('src') || '';
-            }
-            return {
-              index: block.dataset.index ?? '',
-              hasAttribution: Boolean(attribution),
-              attribution,
-              mediaSrc,
-            };
-          });
-          const withAttr = summary.filter((entry) => entry.hasAttribution);
-          const withoutAttr = summary.filter((entry) => !entry.hasAttribution);
-          console.info('[media-attribution]', {
-            page: location.pathname,
-            total: summary.length,
-            withAttribution: withAttr.length,
-            withoutAttribution: withoutAttr.length,
-            sampleWith: withAttr.slice(0, 2),
-            sampleWithout: withoutAttr.slice(0, 2),
-          });
-          if (!withAttr.length) {
-            console.warn('[media-attribution] no attribution rendered on this page', { page: location.pathname });
-          }
-        };
-        const logMediaAttributionVisibility = () => {
-          const attributions = Array.from(document.querySelectorAll('.media-attribution'));
-          if (!attributions.length) return;
-          const visible = attributions.filter((el) => {
-            const rect = el.getBoundingClientRect();
-            return rect.bottom > 0 && rect.top < (window.innerHeight || 1);
-          });
-          const samples = attributions.slice(0, 3).map((el) => {
-            const rect = el.getBoundingClientRect();
-            const cs = getComputedStyle(el);
-            return {
-              text: el.textContent?.trim() ?? '',
-              top: Math.round(rect.top),
-              bottom: Math.round(rect.bottom),
-              height: Math.round(rect.height),
-              color: cs.color,
-              fontSize: cs.fontSize,
-              visibleInViewport: rect.bottom > 0 && rect.top < (window.innerHeight || 1),
-            };
-          });
-          console.info('[media-attribution-visibility]', {
-            page: location.pathname,
-            total: attributions.length,
-            visibleCount: visible.length,
-            samples,
-          });
-        };
-        const runDebugLogs = () => {
-          logTitleFont();
-          logTitleFill();
-          // small delay to allow caption split/animation classes to apply
-          setTimeout(logCaptionFill, 80);
-          setTimeout(logMediaAttribution, 0);
-          setTimeout(logMediaAttributionVisibility, 0);
-        };
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', runDebugLogs, { once: true });
-        } else {
-          runDebugLogs();
-        }
-      })();
-    </script>
-    <script is:inline define:vars={{ isDev: import.meta.env.DEV }}>
-      (() => {
-        const BOOT_ATTR = 'data-media-visibility-booted';
-        const CHECK_DELAY_MS = 2200;
-
-        const runHealthCheck = () => {
-          const hasPhotoMetaPanel = document.querySelector('.photo-meta-panel') !== null;
-          if (!hasPhotoMetaPanel) return;
-
-          const booted = document.documentElement.getAttribute(BOOT_ATTR) === '1';
-          if (isDev) {
-            console.info('[photo-meta-health]', {
-              path: location.pathname,
-              hasPhotoMetaPanel,
-              booted,
-            });
-            return;
-          }
-
-          if (!booted) {
-            console.warn('[photo-meta-health] media visibility script did not initialize', {
-              path: location.pathname,
-            });
-          }
-        };
-
-        const schedule = () => {
-          window.setTimeout(runHealthCheck, CHECK_DELAY_MS);
-        };
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', schedule, { once: true });
-        } else {
-          schedule();
-        }
-      })();
-    </script>
-
-    {/* Hidden defs for the scroll-driven warp + chromatic aberration filter */}
-    <svg aria-hidden="true" width="0" height="0" style="position:absolute;width:0;height:0;visibility:hidden;">
-      <filter
-        id="lens-warp"
-        x="-50%" y="-50%" width="200%" height="200%"
-        filterUnits="objectBoundingBox"
-        color-interpolation-filters="sRGB"
-      >
-        {/* Wide, vertical flow map (low frequency, no static) */}
-        <feTurbulence
-          id="warp-stripes"
-          type="turbulence"
-          baseFrequency="0.08 0.0003"
-          numOctaves="1"
-          seed="7"
-          stitchTiles="noStitch"
-          result="stripeNoise"
-        />
-        <feGaussianBlur in="stripeNoise" stdDeviation="2 32" result="stripeSoft" />
-        <feOffset id="warp-stripe-offset" in="stripeSoft" dx="0" dy="0" result="stripeShifted" />
-        <feDisplacementMap
-          id="warp-displace"
-          in="SourceGraphic"
-          in2="stripeShifted"
-          scale="0"
-          xChannelSelector="R"
-          yChannelSelector="G"
-          result="warp"
-        />
-
-        {/* Split channels so we can offset R/B for chromatic aberration */}
-        <feColorMatrix
-          in="warp"
-          type="matrix"
-          values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"
-          result="warp-red"
-        />
-        <feColorMatrix
-          in="warp"
-          type="matrix"
-          values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0"
-          result="warp-green"
-        />
-        <feColorMatrix
-          in="warp"
-          type="matrix"
-          values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"
-          result="warp-blue"
-        />
-
-        <feOffset id="warp-red-offset" in="warp-red" dx="0" dy="0" result="warp-red-shift" />
-        <feOffset id="warp-blue-offset" in="warp-blue" dx="0" dy="0" result="warp-blue-shift" />
-
-        <feBlend in="warp-red-shift" in2="warp-green" mode="screen" result="warp-rg" />
-        <feBlend in="warp-rg" in2="warp-blue-shift" mode="screen" result="warp-rgb" />
-      </filter>
-    </svg>
   </body>
 </html>

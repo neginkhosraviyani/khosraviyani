@@ -1,87 +1,17 @@
-# Morris Aguilar — Creative Portfolio
+# نگین خسرویانی — پورتفولیو هنری
 
-[![codecov](https://codecov.io/gh/MorrisGlr/creative/branch/main/graph/badge.svg)](https://codecov.io/gh/MorrisGlr/creative)
-[![Deployed on Cloudflare](https://img.shields.io/badge/deployed%20on-Cloudflare-F48120?logo=cloudflare&logoColor=white)](https://mementomorris.art)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+پورتفولیوی شخصی نگین خسرویانی در [khosraviyani.ir](https://khosraviyani.ir/).
 
-**→ [View the live portfolio](https://mementomorris.art/)**
+Astro 5 static site, Tailwind v4, deploys to Cloudflare Pages. Forked from [MorrisGlr/creative](https://github.com/MorrisGlr/creative) (MIT-licensed code; original artwork content removed).
 
-<img src=".github/screenshot_live_site.png" alt="Live portfolio screenshot" width="700" />
+## Sections
 
-A living archive of creative work across four media: **film and digital photography**,
-**carved textbook sculptures**, **algorithmic and generative art**, and **layered paper works**.
+- `/ai/` — هوش مصنوعی (AI-generated work)
+- `/miniature/` — نگارگری و گل و مرغ (Persian miniature & gol-o-morgh)
+- `/graphic/` — گرافیک (graphic design)
+- `/other/` — سایر (other work)
 
-There is always a system first. Each medium has its own constraints, and I choose media
-in which those constraints become the subject. [Read the full artist statement →](https://mementomorris.art/about/)
-
----
-
-## Why I Built This
-
-I did not want a portfolio that felt like a static list of images. I wanted a system that presents each project as a cohesive body of work with its own visual identity.
-
-I also wanted the site to be maintainable over time. My goal was to make updates simple: I can add a new project folder with media and metadata, and the site assembles the project page and index tile automatically.
-
-## How the Portfolio Is Designed
-
-The site is organized around four category entry points: `Photos`, `Textbook`, `Algo`, and `Paper`.
-
-Each project page is designed with a consistent structure:
-
-- A hero section that introduces the project title, date, and framing text.
-- A media stream that lets the work unfold sequentially.
-- A shared visual language that keeps the portfolio coherent while allowing each series to feel distinct.
-
-Each image surfaces its own color vocabulary — a thin bar of dominant tones extracted from the photograph itself, placed beneath it. The palette comes from the image, not from an editorial choice, so it shifts with every work.
-
-For unreleased work, I use catalog placeholders labeled `Held for Submission`. These are intentionally designed cards rather than empty pages, so visitors can understand that a project exists in the series even when the full work cannot be published yet.
-
-## What "Held for Submission" Means
-
-Some calls for art require work to remain unpublished until decisions are complete. To respect that, I publish a designed placeholder instead of the full media.
-
-Each placeholder includes:
-
-- Title
-- Year
-- Medium
-- Dimensions
-
-What is intentionally withheld:
-
-- Final images or videos
-- Full process documentation
-- Complete project media stream
-
-## How I Add New Work
-
-My update workflow is designed to be folder-first:
-
-1. Create a folder at `src/content/<section>/<Project-Slug>/`.
-2. Add project media into `src/content/<section>/<Project-Slug>/media/`.
-3. Add a `page.json` file in `src/content/<section>/<Project-Slug>/`.
-4. Build the site, and the project appears in the section index and gets its own detail page.
-
-## Featured Series
-
-- `Photos`: Film and digital photography series focused on repeated encounters in everyday scenes.
-- `Textbook`: Carved textbook sculptures that reframe educational imagery as standalone visual art.
-- `Algo`: Generative and algorithmic motion pieces.
-- `Paper`: Layered paper works inspired by structure, depth, and architecture.
-
-## For Technical Readers
-
-This site is a static Astro 5 project with a content-driven architecture:
-
-- `src/scripts/content.ts` loads `page.json` files and resolves media URLs with `import.meta.glob`.
-- `src/content/placeholders.ts` defines placeholder projects and their visual tokens.
-- Tailwind is configured through the Vite plugin in `astro.config.mjs`.
-- Base-aware path helpers are used so links and assets work on GitHub Pages under `/creative`.
-- Dominant color palettes are extracted from each image at build time using `node-vibrant`, disk-cached in `.color-cache.json` so only the first build per image pays the extraction cost. `sharp` reads natural image dimensions so the palette bar width matches the actual rendered pixel width of the image rather than the container — portrait images on wide screens narrow the bar correctly.
-
-## Local Development
-
-Run from the project root:
+## Development
 
 ```bash
 npm install
@@ -90,72 +20,26 @@ npm run build
 npm run preview
 ```
 
-## Content Schema (Quick Reference)
+## Adding a project
 
-In practice, each project `page.json` should include:
+Each project lives at `src/content/<section>/<slug>/`:
 
-- Required fields: `title`, `slug`, `cover`, `media`
-- Common fields: `dateCreated`, `displayDate`, `description`, `tags`, `options`
-- Media item `type`: `image`, `video`, or `model`
+1. Add media files to `src/content/<section>/<slug>/media/`
+2. Add a `page.json` in `src/content/<section>/<slug>/` with `title`, `slug`, `cover`, and a `media` array
+3. The build picks it up automatically; the placeholder card (if any) is replaced
 
-Minimal example:
-
-```json
-{
-  "title": "Project Title",
-  "slug": "Project-Title",
-  "dateCreated": "2026-01-15",
-  "displayDate": "2026",
-  "description": "Short project description.",
-  "cover": "cover.jpg",
-  "tags": ["tag-one", "tag-two"],
-  "media": [
-    {
-      "type": "image",
-      "src": "image-01.jpg",
-      "alt": "Alt text",
-      "caption": "Caption text"
-    },
-    {
-      "type": "video",
-      "src": "clip-01.mp4",
-      "caption": "Video caption"
-    },
-    {
-      "type": "model",
-      "src": "model.glb",
-      "usdz": "model.usdz"
-    }
-  ],
-  "options": {
-    "parallax": true,
-    "bgFromDominantColor": true  // transitions the page background as images scroll into view
-  }
-}
-```
-
-The dominant-color palette bar (the thin strip of extracted tones beneath each image) is automatic for the `photos`, `textbooks`, and `paper` sections — it has no `page.json` option and cannot be disabled per project.
+Placeholders (cards shown while work is not yet published) are defined in `src/content/placeholders.ts`.
 
 ## Deployment
 
-This site is deployed via Cloudflare Workers at `mementomorris.art`. Cloudflare pulls directly from the `main` branch — no GitHub Actions deploy step is involved.
+Static build output goes to `dist/`. Cloudflare Pages settings:
 
-The CI workflow (`.github/workflows/deploy.yml`) runs unit tests, uploads coverage to Codecov, builds the site, and runs integration tests on every push to `main`.
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Node version: 20 or 22
 
-Configured production URL:
+The original template targets Cloudflare Workers; the `wrangler.jsonc` has been removed in favor of Pages.
 
-- `https://mementomorris.art/`
+## i18n status
 
-## Licensing
-
-The **code and architecture** of this site are available under the [MIT License](LICENSE). You are free to fork and adapt the Astro template for your own portfolio.
-
-The **artwork and content** — all images, videos, the artist statement, and project descriptions — are licensed under [CC BY-NC 4.0](LICENSE-CONTENT). They may not be reproduced for commercial purposes. See [LICENSE-CONTENT](LICENSE-CONTENT) for details.
-
-## Notes
-
-This portfolio is intentionally iterative. Some projects appear as placeholders while they are held for submission or still in progress, and then transition into full project pages when publication is appropriate.
-
-# Contact
-Morris A. Aguilar, Ph.D.<br>
-<a href= https://www.linkedin.com/in/morris-a-aguilar/ >LinkedIn</a><br>
+The site renders Persian (RTL) by default. The `Layout.astro` accepts a `lang` prop (`'fa' | 'en'`) and switches `<html lang dir>` accordingly. English routes are not yet built — when added, mirror each page under `/en/...` and pass `lang="en"` to the layout.

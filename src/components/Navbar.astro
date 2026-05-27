@@ -5,78 +5,98 @@ import { normalizePathname, withBase } from "../scripts/paths";
 const pathname = normalizePathname(Astro.url.pathname);
 const homeHref = withBase("/");
 const links = [
-  { href: homeHref,                label: 'Home' },
-  { href: withBase('/photos/'),    label: 'Photos' },
-  { href: withBase('/textbooks/'), label: 'Textbook' },
-  { href: withBase('/algo/'),      label: 'Algo' },
-  { href: withBase('/paper/'),     label: 'Paper' },
+  { href: homeHref,                  label: 'خانه' },
+  { href: withBase('/ai/'),          label: 'هوش مصنوعی' },
+  { href: withBase('/miniature/'),   label: 'نگارگری' },
+  { href: withBase('/graphic/'),     label: 'گرافیک' },
+  { href: withBase('/other/'),       label: 'سایر' },
+  { href: withBase('/about/'),       label: 'دربارهٔ من' },
+  { href: withBase('/contact/'),     label: 'تماس' },
 ];
 ---
-<nav class="pill-nav" aria-label="Primary">
-  <ul>
-    {links.map((l) => {
-      const normalizedHref = normalizePathname(l.href);
-      const isHome = normalizedHref === normalizePathname(homeHref);
-      const isActive = isHome
-        ? pathname === normalizedHref
-        : pathname === normalizedHref || pathname.startsWith(`${normalizedHref}/`);
-      return (
-        <li>
-          <a href={l.href} aria-current={isActive ? 'page' : undefined}>
-            {l.label}
-          </a>
-        </li>
-      );
-    })}
-  </ul>
-</nav>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__brand" href={homeHref}>نگین خسرویانی</a>
+    <nav class="site-nav" aria-label="منوی اصلی">
+      <ul>
+        {links.slice(1).map((l) => {
+          const normalizedHref = normalizePathname(l.href);
+          const isActive = pathname === normalizedHref || pathname.startsWith(`${normalizedHref}/`);
+          return (
+            <li>
+              <a href={l.href} aria-current={isActive ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  </div>
+</header>
 
 <style>
-  .pill-nav {
-    position: sticky;
-    top: 12px;
-    z-index: 50;
-    margin: 12px auto 24px;
-    padding: 8px;
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    border-radius: 9999px;
-    background: color-mix(in oklab, Canvas 50%, transparent);
-    backdrop-filter: blur(10px);
-    border: 1px solid color-mix(in oklab, CanvasText 12%, transparent);
-    box-shadow: 0 6px 20px color-mix(in oklab, CanvasText 10%, transparent);
-  }
-  .pill-nav .brand {
-    display:inline-flex; align-items:center; justify-content:center;
-    width: 36px; height: 36px; border-radius: 9999px;
-    text-decoration:none; font-weight:700;
-    background: color-mix(in oklab, CanvasText 9%, transparent);
-    color: color-mix(in oklab, Canvas 90%, transparent);
-  }
-  .pill-nav ul {
-    display:flex; gap: 4px; list-style:none; margin:0; padding:0;
-  }
-  .pill-nav a[href] {
-    display:inline-block;
-    padding: 8px 14px;
-    text-decoration:none;
-    border-radius: 9999px;
-    color: inherit;
-    border: 1px solid transparent;
-    transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
-  }
-  .pill-nav a[href]:hover { transform: translateY(-1px); }
-  .pill-nav a[aria-current="page"] {
-    background: color-mix(in oklab, CanvasText 8%, transparent);
-    border-color: color-mix(in oklab, CanvasText 14%, transparent);
+  .site-header {
+    background: var(--page-bg);
+    border-bottom: 1px solid var(--hairline);
   }
 
-  @media (max-width: 560px) {
-    .pill-nav { padding: 6px; gap: 4px; }
-    .pill-nav a[href] { padding: 8px 10px; }
-    .pill-nav .brand { width: 32px; height: 32px; }
+  .site-header__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem var(--page-gutter);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+
+  .site-header__brand {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0;
+  }
+
+  .site-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+
+  .site-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 400;
+    padding: 0.25rem 0;
+    transition: color 0.15s ease;
+  }
+
+  .site-nav a:hover { color: var(--ink); }
+
+  .site-nav a[aria-current="page"] {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+
+  @media (max-width: 640px) {
+    .site-header__inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1.25rem var(--page-gutter);
+    }
+    .site-nav ul {
+      gap: 0.25rem 1.1rem;
+    }
+    .site-nav a { font-size: 0.9rem; }
   }
 </style>

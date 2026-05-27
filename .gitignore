@@ -23,18 +23,15 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# not ready for release
-src/content/textbooks/depths-of-knowledge-vol-1-and-2
-src/content/textbooks/depths-of-knowledge-vol-3
-src/content/textbooks/depths-of-knowledge-vol-6
-src/content/textbooks/depths-of-knowledge-vol-7
-src/content/textbooks/depths-of-knowledge-vol-8
-src/content/textbooks/Depths-of-Knowledge-Vol-9
-src/content/paper/window-layers
-src/content/paper/Fortune
-src/content/photos/face-masks
-src/content/photos/USPS
-src/content/photos/Haystacks
+# not ready for release — placeholders defined in src/content/placeholders.ts
+src/content/ai/collection-01
+src/content/ai/collection-02
+src/content/miniature/gol-o-morgh-01
+src/content/miniature/negargari-01
+src/content/miniature/negargari-02
+src/content/graphic/graphic-01
+src/content/graphic/graphic-02
+src/content/other/misc-01
 
 # python scripts
 src/img_resize.py
