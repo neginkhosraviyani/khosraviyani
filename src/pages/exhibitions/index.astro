@@ -1,0 +1,14 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { withBase } from '../../scripts/paths';
+const subs = [
+  { href: withBase('/exhibitions/dafineh/'),     title: 'موزه دفینه تهران' },
+  { href: withBase('/exhibitions/reza-abbasi/'), title: 'موزه رضا عباسی تهران' },
+];
+---
+<Layout title="نمایشگاه — نگین خسرویانی" description="نمایشگاه‌ها و موزه‌هایی که آثار نگین خسرویانی در آن‌ها به‌نمایش گذاشته شده‌اند.">
+  <section class="page-header"><h1 class="page-header__title">نمایشگاه</h1><p class="page-header__lede">یک نمایشگاه را انتخاب کنید</p></section>
+  <div class="subgrid">
+    {subs.map((s) => (<a class="subgrid__card" href={s.href}><h2 class="subgrid__card-title">{s.title}</h2></a>))}
+  </div>
+</Layout>

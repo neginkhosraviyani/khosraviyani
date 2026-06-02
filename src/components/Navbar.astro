@@ -1,102 +1,219 @@
 ---
-// src/components/NavBar.astro
+// src/components/Navbar.astro — Right-side vertical sidebar
 import { normalizePathname, withBase } from "../scripts/paths";
+import social from "../content/social.json";
 
 const pathname = normalizePathname(Astro.url.pathname);
 const homeHref = withBase("/");
-const links = [
-  { href: homeHref,                  label: 'خانه' },
+
+const sections = [
   { href: withBase('/ai/'),          label: 'هوش مصنوعی' },
-  { href: withBase('/miniature/'),   label: 'نگارگری' },
+  { href: withBase('/motion/'),      label: 'موشن گرافیک' },
   { href: withBase('/graphic/'),     label: 'گرافیک' },
-  { href: withBase('/other/'),       label: 'سایر' },
+  { href: withBase('/art/'),         label: 'آثار هنری' },
+  { href: withBase('/exhibitions/'), label: 'نمایشگاه' },
+  { href: withBase('/honors/'),      label: 'افتخارات' },
   { href: withBase('/about/'),       label: 'دربارهٔ من' },
-  { href: withBase('/contact/'),     label: 'تماس' },
+];
+
+const isActive = (href: string) => {
+  const n = normalizePathname(href);
+  return pathname === n || pathname.startsWith(`${n}/`);
+};
+
+// Social icons (filled if URL is set in social.json, dimmed otherwise)
+const socialLinks = [
+  { key: 'instagram', label: 'اینستاگرام', url: (social as any).instagram ?? '' },
+  { key: 'youtube',   label: 'یوتیوب',     url: (social as any).youtube ?? '' },
+  { key: 'telegram',  label: 'تلگرام',     url: (social as any).telegram ?? '' },
+  { key: 'email',     label: 'ایمیل',      url: (social as any).email ? `mailto:${(social as any).email}` : '' },
 ];
 ---
-<header class="site-header">
-  <div class="site-header__inner">
-    <a class="site-header__brand" href={homeHref}>نگین خسرویانی</a>
-    <nav class="site-nav" aria-label="منوی اصلی">
-      <ul>
-        {links.slice(1).map((l) => {
-          const normalizedHref = normalizePathname(l.href);
-          const isActive = pathname === normalizedHref || pathname.startsWith(`${normalizedHref}/`);
-          return (
-            <li>
-              <a href={l.href} aria-current={isActive ? 'page' : undefined}>
-                {l.label}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+
+<!-- Language toggle: top-LEFT corner (the empty mockup square) -->
+<div class="lang-toggle" aria-label="انتخاب زبان">
+  <button type="button" data-lang="fa" class="lang-toggle__btn lang-toggle__btn--active">فا</button>
+  <span class="lang-toggle__sep">|</span>
+  <button type="button" data-lang="en" class="lang-toggle__btn">EN</button>
+</div>
+
+<aside class="sidebar" aria-label="منوی اصلی">
+  <a href={homeHref} class="sidebar__brand">
+    <span class="sidebar__logo" aria-hidden="true">N</span>
+    <span class="sidebar__name">نگین خسرویانی</span>
+  </a>
+
+  <nav class="sidebar__nav">
+    <ul>
+      {sections.map((s) => (
+        <li>
+          <a href={s.href} class:list={['sidebar__link', isActive(s.href) && 'sidebar__link--active']}>
+            {s.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="sidebar__social" aria-label="شبکه‌های اجتماعی">
+    {socialLinks.map((s) => (
+      <a
+        href={s.url || '#'}
+        title={s.label}
+        aria-label={s.label}
+        class:list={['sidebar__social-btn', !s.url && 'sidebar__social-btn--empty']}
+        target={s.url && !s.url.startsWith('mailto:') ? '_blank' : undefined}
+        rel={s.url && !s.url.startsWith('mailto:') ? 'noopener noreferrer' : undefined}
+      >
+        {s.key === 'instagram' && (
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7.75 2A5.75 5.75 0 0 0 2 7.75v8.5A5.75 5.75 0 0 0 7.75 22h8.5A5.75 5.75 0 0 0 22 16.25v-8.5A5.75 5.75 0 0 0 16.25 2h-8.5Zm0 1.5h8.5A4.25 4.25 0 0 1 20.5 7.75v8.5a4.25 4.25 0 0 1-4.25 4.25h-8.5A4.25 4.25 0 0 1 3.5 16.25v-8.5A4.25 4.25 0 0 1 7.75 3.5Zm9.13 1.88a1.12 1.12 0 1 0 0 2.24 1.12 1.12 0 0 0 0-2.24ZM12 6.75A5.25 5.25 0 1 0 12 17.25 5.25 5.25 0 0 0 12 6.75Zm0 1.5a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5Z"/></svg>
+        )}
+        {s.key === 'youtube' && (
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M23.5 7.2c-.3-1.1-1.1-1.9-2.2-2.2C19.4 4.5 12 4.5 12 4.5s-7.4 0-9.3.5C1.6 5.3.8 6.1.5 7.2 0 9.1 0 12 0 12s0 2.9.5 4.8c.3 1.1 1.1 1.9 2.2 2.2 1.9.5 9.3.5 9.3.5s7.4 0 9.3-.5c1.1-.3 1.9-1.1 2.2-2.2.5-1.9.5-4.8.5-4.8s0-2.9-.5-4.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+        )}
+        {s.key === 'telegram' && (
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.24 3.64 11.95c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42Z"/></svg>
+        )}
+        {s.key === 'email' && (
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l9 5.6 9-5.6V7H3Zm0 2.6V17h18V9.6l-9 5.6-9-5.6Z"/></svg>
+        )}
+      </a>
+    ))}
   </div>
-</header>
+</aside>
 
 <style>
-  .site-header {
-    background: var(--page-bg);
-    border-bottom: 1px solid var(--hairline);
-  }
-
-  .site-header__inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1.5rem var(--page-gutter);
-    display: flex;
-    flex-wrap: wrap;
+  /* Top-LEFT language toggle (always visual left, regardless of dir) */
+  .lang-toggle {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    right: auto;
+    z-index: 30;
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.25rem;
+    gap: 0.3rem;
+    background: var(--page-bg);
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
   }
-
-  .site-header__brand {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--ink);
-    text-decoration: none;
-    letter-spacing: 0;
+  .lang-toggle__btn {
+    background: none; border: 0; cursor: pointer; padding: 0.15rem 0.45rem;
+    font: inherit; color: var(--muted); font-size: 0.82rem;
+    border-radius: 999px; transition: color .15s, background .15s;
   }
+  .lang-toggle__btn--active { color: var(--ink); background: color-mix(in oklab, var(--ink) 8%, transparent); }
+  .lang-toggle__btn:hover { color: var(--ink); }
+  .lang-toggle__sep { color: var(--hairline); font-size: 0.82rem; }
 
-  .site-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  /* Right sidebar (always visual right, regardless of dir) */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: auto;
+    width: 240px;
+    padding: 1.75rem 1.25rem 1.5rem;
+    border-left: 1px solid var(--hairline);
+    background: var(--page-bg);
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 1.5rem;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow-y: auto;
+    z-index: 20;
   }
 
-  .site-nav a {
-    color: var(--muted);
+  .sidebar__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 400;
-    padding: 0.25rem 0;
-    transition: color 0.15s ease;
-  }
-
-  .site-nav a:hover { color: var(--ink); }
-
-  .site-nav a[aria-current="page"] {
     color: var(--ink);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 1px;
+  }
+  .sidebar__logo {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: #3FA9F5;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.6rem;
+    font-family: 'Vazirmatn', sans-serif;
+  }
+  .sidebar__name { font-size: 0.95rem; font-weight: 500; }
+
+  .sidebar__nav { flex: 1; }
+  .sidebar__nav ul {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-direction: column; gap: 0.55rem;
+  }
+  .sidebar__link {
+    display: block;
+    background: #3FA9F5;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: background .15s, transform .15s;
+  }
+  .sidebar__link:hover { background: #2196E8; transform: translateY(-1px); }
+  .sidebar__link--active { background: #1A82C9; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4); }
+
+  .sidebar__social {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .sidebar__social-btn {
+    width: 32px; height: 32px;
+    border-radius: 0.35rem;
+    background: #3FA9F5;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background .15s, transform .15s;
+  }
+  .sidebar__social-btn:hover { background: #2196E8; transform: translateY(-1px); }
+  .sidebar__social-btn--empty {
+    background: color-mix(in oklab, #3FA9F5 35%, transparent);
+    pointer-events: none;
   }
 
-  @media (max-width: 640px) {
-    .site-header__inner {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 1.25rem var(--page-gutter);
+  /* Mobile: sidebar collapses to a top horizontal bar */
+  @media (max-width: 900px) {
+    .sidebar {
+      position: static;
+      top: auto; bottom: auto; right: auto; left: auto;
+      width: 100%;
+      padding: 1rem var(--page-gutter);
+      border-left: 0;
+      border-bottom: 1px solid var(--hairline);
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      overflow: visible;
     }
-    .site-nav ul {
-      gap: 0.25rem 1.1rem;
-    }
-    .site-nav a { font-size: 0.9rem; }
+    .sidebar__brand { flex-direction: row; gap: 0.5rem; }
+    .sidebar__logo { width: 36px; height: 36px; font-size: 0.95rem; }
+    .sidebar__name { font-size: 0.95rem; }
+    .sidebar__nav { flex: 1 1 100%; order: 3; }
+    .sidebar__nav ul { flex-direction: row; flex-wrap: wrap; gap: 0.4rem; justify-content: center; }
+    .sidebar__link { padding: 0.35rem 0.65rem; font-size: 0.82rem; }
+    .sidebar__social { border-top: 0; padding-top: 0; }
+    .lang-toggle { top: 1rem; left: 1rem; padding: 0.15rem 0.4rem; }
+    .lang-toggle__btn { font-size: 0.75rem; }
   }
 </style>

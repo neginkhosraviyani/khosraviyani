@@ -4,7 +4,17 @@
 
 import type { PlaceholderDesign } from '../content/placeholders';
 
-export type Section = 'ai' | 'miniature' | 'graphic' | 'other';
+export type Section =
+  | 'ai'
+  | 'motion'
+  | 'graphic-illustration'
+  | 'graphic-digital'
+  | 'graphic-book'
+  | 'art-negargari'
+  | 'art-golomorgh'
+  | 'art-tazhib'
+  | 'exhibition-dafineh'
+  | 'exhibition-rezaabbasi';
 
 export function slugFromPath(path: string): string {
   // e.g. ../content/photos/sf-street/page.json -> "sf-street"
@@ -69,10 +79,19 @@ export function buildPlaceholderPattern(design: PlaceholderDesign): string {
 }
 
 export function placeholderDescription(section: Section): string {
-  if (section === 'ai') return 'کارت زمان‌بند برای مجموعهٔ هوش مصنوعی در حال آماده‌سازی.';
-  if (section === 'miniature') return 'کارت زمان‌بند برای مجموعهٔ نگارگری و گل و مرغ در حال آماده‌سازی.';
-  if (section === 'graphic') return 'کارت زمان‌بند برای مجموعهٔ گرافیک در حال آماده‌سازی.';
-  return 'کارت زمان‌بند برای مجموعه‌ای در حال آماده‌سازی.';
+  const map: Record<Section, string> = {
+    'ai': 'مجموعهٔ هوش مصنوعی در حال آماده‌سازی.',
+    'motion': 'مجموعهٔ موشن گرافیک در حال آماده‌سازی.',
+    'graphic-illustration': 'مجموعهٔ تصویرسازی در حال آماده‌سازی.',
+    'graphic-digital': 'مجموعهٔ دیجیتال آرت در حال آماده‌سازی.',
+    'graphic-book': 'مجموعهٔ صفحه‌آرایی و جلد کتاب در حال آماده‌سازی.',
+    'art-negargari': 'مجموعهٔ نگارگری در حال آماده‌سازی.',
+    'art-golomorgh': 'مجموعهٔ گل و مرغ در حال آماده‌سازی.',
+    'art-tazhib': 'مجموعهٔ تذهیب در حال آماده‌سازی.',
+    'exhibition-dafineh': 'گزارش نمایشگاه موزه دفینهٔ تهران در حال آماده‌سازی.',
+    'exhibition-rezaabbasi': 'گزارش نمایشگاه موزه رضا عباسی تهران در حال آماده‌سازی.',
+  };
+  return map[section] ?? 'مجموعه‌ای در حال آماده‌سازی.';
 }
 
 export function rationalToNumber(value: any): number | undefined {

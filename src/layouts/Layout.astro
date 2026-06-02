@@ -1,7 +1,6 @@
 ---
 // src/layouts/Layout.astro
 import NavBar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
 import { withBase } from "../scripts/paths";
 import "../styles/global.css";
 
@@ -13,7 +12,7 @@ interface Props {
 }
 
 const SITE_TITLE = "نگین خسرویانی";
-const SITE_DESCRIPTION = "پورتفولیوی نگین خسرویانی — هوش مصنوعی، نگارگری و گل و مرغ، طراحی گرافیک و آثار دیگر.";
+const SITE_DESCRIPTION = "پورتفولیوی نگین خسرویانی — هوش مصنوعی، موشن گرافیک، گرافیک، آثار هنری، نمایشگاه‌ها، افتخارات.";
 
 const {
   title = SITE_TITLE,
@@ -57,9 +56,8 @@ const resolvedOgImage = ogImage || defaultOgImage;
   <body>
     <a class="skip" href="#main">رفتن به محتوا</a>
     <NavBar />
-    <main id="main" class="container">
+    <main id="main" class="page-shell">
       <slot />
     </main>
-    <Footer />
   </body>
 </html>

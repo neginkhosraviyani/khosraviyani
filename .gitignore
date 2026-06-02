@@ -24,14 +24,16 @@ pnpm-debug.log*
 .idea/
 
 # not ready for release — placeholders defined in src/content/placeholders.ts
-src/content/ai/collection-01
-src/content/ai/collection-02
-src/content/miniature/gol-o-morgh-01
-src/content/miniature/negargari-01
-src/content/miniature/negargari-02
-src/content/graphic/graphic-01
-src/content/graphic/graphic-02
-src/content/other/misc-01
+src/content/ai/sample-01
+src/content/motion/sample-01
+src/content/graphic-illustration/sample-01
+src/content/graphic-digital/sample-01
+src/content/graphic-book/sample-01
+src/content/art-negargari/sample-01
+src/content/art-golomorgh/sample-01
+src/content/art-tazhib/sample-01
+src/content/exhibition-dafineh/sample-01
+src/content/exhibition-rezaabbasi/sample-01
 
 # python scripts
 src/img_resize.py

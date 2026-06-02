@@ -1,0 +1,37 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getAlbums, getAlbum, resolveAlbumMediaUrls } from '../../../scripts/content';
+import { withBase } from '../../../scripts/paths';
+export async function getStaticPaths() {
+  return getAlbums('exhibition-rezaabbasi').map((a) => ({ params: { slug: a.slug } }));
+}
+const { slug } = Astro.params;
+if (!slug) throw new Error('Missing slug');
+const albumRaw = getAlbum('exhibition-rezaabbasi', slug);
+if (!albumRaw) throw new Error(`Album not found: ${slug}`);
+const album = await resolveAlbumMediaUrls('exhibition-rezaabbasi', slug, albumRaw);
+const isPlaceholder = album.placeholder?.enabled;
+const trimmed = (v?: string) => v?.trim() || undefined;
+const displayDate = trimmed(album.placeholder?.year) || trimmed(album.displayDate) || trimmed(album.dateCreated) || trimmed(album.date);
+---
+<Layout title={`${album.title} — نگین خسرویانی`} description={album.description}>
+  <article class="project">
+    <header class="project__header">
+      <h1 class="project__title">{album.title}</h1>
+      {displayDate && <p class="project__date">{displayDate}</p>}
+      {album.description && <p class="project__description">{album.description}</p>}
+    </header>
+    {isPlaceholder ? (
+      <p class="project__placeholder">این مجموعه در دست تهیه است و به‌زودی منتشر می‌شود.</p>
+    ) : (
+      <div class="project__media">
+        {album.media.map((m: any) => m.type === 'image' ? (
+          <figure class="project__figure"><picture>{m.webpSrc && <source type="image/webp" srcset={m.webpSrc} />}<img src={m.src} alt={m.alt ?? album.title} loading="lazy" decoding="async" /></picture>{m.caption && <figcaption>{m.caption}</figcaption>}</figure>
+        ) : m.type === 'video' ? (
+          <figure class="project__figure"><video controls preload="metadata" poster={m.poster}>{(m.sources ?? []).map((s: any) => (<source src={s.src} type={s.type} />))}{m.src && !m.sources?.length && <source src={m.src} />}</video>{m.caption && <figcaption>{m.caption}</figcaption>}</figure>
+        ) : null)}
+      </div>
+    )}
+    <footer class="project__footer"><a href={withBase("/exhibitions/reza-abbasi/")} class="project__back">→ بازگشت به موزه رضا عباسی تهران</a></footer>
+  </article>
+</Layout>

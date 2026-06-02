@@ -1,0 +1,19 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getAlbums, resolveAlbumMediaUrls } from '../../../scripts/content';
+import { withBase } from '../../../scripts/paths';
+const albumsRaw = getAlbums('art-tazhib');
+const albums = await Promise.all(albumsRaw.map((a) => resolveAlbumMediaUrls('art-tazhib', a.slug, a, { coverOnly: true })));
+---
+<Layout title="تذهیب — نگین خسرویانی" description="آثار تذهیب نگین خسرویانی.">
+  <section class="page-header"><h1 class="page-header__title">تذهیب</h1></section>
+  <div class="gallery">
+    {albums.map((a) => (
+      <a class="gallery__item" href={withBase(`/art/tazhib/${a.slug}/`)}>
+        <div class="gallery__thumb-wrap">{a.cover && (<picture>{a.coverWebp && <source type="image/webp" srcset={a.coverWebp} />}<img class="gallery__thumb" src={a.cover} alt={a.title} loading="lazy" decoding="async" /></picture>)}</div>
+        <h2 class="gallery__title">{a.title}</h2>
+        {a.placeholder?.year && <p class="gallery__caption">{a.placeholder.year}</p>}
+      </a>
+    ))}
+  </div>
+</Layout>

@@ -1,0 +1,19 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getAlbums, resolveAlbumMediaUrls } from '../../../scripts/content';
+import { withBase } from '../../../scripts/paths';
+const albumsRaw = getAlbums('graphic-book');
+const albums = await Promise.all(albumsRaw.map((a) => resolveAlbumMediaUrls('graphic-book', a.slug, a, { coverOnly: true })));
+---
+<Layout title="صفحه‌آرایی و جلد کتاب — نگین خسرویانی" description="آثار صفحه‌آرایی و جلد کتاب نگین خسرویانی.">
+  <section class="page-header"><h1 class="page-header__title">صفحه‌آرایی و جلد کتاب</h1></section>
+  <div class="gallery">
+    {albums.map((a) => (
+      <a class="gallery__item" href={withBase(`/graphic/book/${a.slug}/`)}>
+        <div class="gallery__thumb-wrap">{a.cover && (<picture>{a.coverWebp && <source type="image/webp" srcset={a.coverWebp} />}<img class="gallery__thumb" src={a.cover} alt={a.title} loading="lazy" decoding="async" /></picture>)}</div>
+        <h2 class="gallery__title">{a.title}</h2>
+        {a.placeholder?.year && <p class="gallery__caption">{a.placeholder.year}</p>}
+      </a>
+    ))}
+  </div>
+</Layout>

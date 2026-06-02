@@ -1,35 +1,33 @@
 ---
-// src/pages/index.astro
+// src/pages/index.astro — home page with combined gallery of all sections
 import Layout from "../layouts/Layout.astro";
 import { getAlbums, resolveAlbumMediaUrls } from "../scripts/content";
 import { withBase } from "../scripts/paths";
 import type { Section } from "../scripts/content";
 
-const sections: { section: Section; label: string; href: string }[] = [
-  { section: "ai",        label: "هوش مصنوعی",        href: withBase("/ai/") },
-  { section: "miniature", label: "نگارگری و گل و مرغ", href: withBase("/miniature/") },
-  { section: "graphic",   label: "گرافیک",            href: withBase("/graphic/") },
-  { section: "other",     label: "سایر",              href: withBase("/other/") },
+const sections: { section: Section; label: string; hrefBase: string }[] = [
+  { section: "ai",                    label: "هوش مصنوعی",         hrefBase: withBase("/ai/") },
+  { section: "motion",                label: "موشن گرافیک",         hrefBase: withBase("/motion/") },
+  { section: "graphic-illustration",  label: "تصویرسازی",           hrefBase: withBase("/graphic/illustration/") },
+  { section: "graphic-digital",       label: "دیجیتال آرت",         hrefBase: withBase("/graphic/digital/") },
+  { section: "graphic-book",          label: "صفحه‌آرایی و جلد کتاب", hrefBase: withBase("/graphic/book/") },
+  { section: "art-negargari",         label: "نگارگری",            hrefBase: withBase("/art/negargari/") },
+  { section: "art-golomorgh",         label: "گل و مرغ",            hrefBase: withBase("/art/gol-o-morgh/") },
+  { section: "art-tazhib",            label: "تذهیب",              hrefBase: withBase("/art/tazhib/") },
+  { section: "exhibition-dafineh",    label: "موزه دفینه تهران",     hrefBase: withBase("/exhibitions/dafineh/") },
+  { section: "exhibition-rezaabbasi", label: "موزه رضا عباسی تهران", hrefBase: withBase("/exhibitions/reza-abbasi/") },
 ];
 
-type Entry = {
-  href: string;
-  title: string;
-  cover?: string;
-  coverWebp?: string;
-  sectionLabel: string;
-  year?: string;
-};
-
+type Entry = { href: string; title: string; cover?: string; coverWebp?: string; sectionLabel: string; year?: string };
 const entries: Entry[] = [];
-for (const { section, label, href: sectionHref } of sections) {
+for (const { section, label, hrefBase } of sections) {
   const raw = getAlbums(section);
   const resolved = await Promise.all(
     raw.map((album) => resolveAlbumMediaUrls(section, album.slug, album, { coverOnly: true }))
   );
   for (const album of resolved) {
     entries.push({
-      href: `${sectionHref}${album.slug}/`,
+      href: `${hrefBase}${album.slug}/`,
       title: album.title,
       cover: album.cover,
       coverWebp: album.coverWebp,
@@ -43,7 +41,7 @@ for (const { section, label, href: sectionHref } of sections) {
 <Layout>
   <section class="page-header">
     <h1 class="page-header__title">نگین خسرویانی</h1>
-    <p class="page-header__lede">آثار هنری — هوش مصنوعی، نگارگری، گرافیک</p>
+    <p class="page-header__lede">هنرمند — هوش مصنوعی، موشن گرافیک، گرافیک و آثار سنتی</p>
   </section>
 
   <div class="gallery">
@@ -53,13 +51,7 @@ for (const { section, label, href: sectionHref } of sections) {
           {e.cover && (
             <picture>
               {e.coverWebp && <source type="image/webp" srcset={e.coverWebp} />}
-              <img
-                class="gallery__thumb"
-                src={e.cover}
-                alt={e.title}
-                loading="lazy"
-                decoding="async"
-              />
+              <img class="gallery__thumb" src={e.cover} alt={e.title} loading="lazy" decoding="async" />
             </picture>
           )}
         </div>

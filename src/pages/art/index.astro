@@ -1,0 +1,15 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { withBase } from '../../scripts/paths';
+const subs = [
+  { href: withBase('/art/negargari/'),    title: 'نگارگری' },
+  { href: withBase('/art/gol-o-morgh/'),  title: 'گل و مرغ' },
+  { href: withBase('/art/tazhib/'),       title: 'تذهیب' },
+];
+---
+<Layout title="آثار هنری — نگین خسرویانی" description="آثار هنری: نگارگری، گل و مرغ و تذهیب.">
+  <section class="page-header"><h1 class="page-header__title">آثار هنری</h1><p class="page-header__lede">یک زیربخش را انتخاب کنید</p></section>
+  <div class="subgrid">
+    {subs.map((s) => (<a class="subgrid__card" href={s.href}><h2 class="subgrid__card-title">{s.title}</h2></a>))}
+  </div>
+</Layout>
