@@ -1,9 +1,230 @@
 ---
+// src/pages/honors/index.astro
 import Layout from "../../layouts/Layout.astro";
+
+type Row = { year: string; fa: string; en: string };
+type Section = { fa: string; en: string; rows: Row[] };
+
+const sections: Section[] = [
+  {
+    fa: 'سوابق تحصیلی',
+    en: 'Education',
+    rows: [
+      {
+        year: '۱۳۹۹–۱۴۰۱',
+        fa: 'کارشناسی ارشد پژوهش هنر، پردیس هنرهای زیبا، دانشگاه تهران',
+        en: 'M.A. in Art Research, College of Fine Arts, University of Tehran (2020–2022)',
+      },
+      {
+        year: '۱۳۹۱–۱۳۹۶',
+        fa: 'کارشناسی صنایع‌دستی، دانشگاه الزهرا (س) تهران — گرایش تذهیب و نگارگری',
+        en: 'B.A. in Handicrafts, Alzahra University, Tehran — specialization in Illumination & Persian Miniature (2012–2017)',
+      },
+      {
+        year: '۱۳۹۱',
+        fa: 'رتبهٔ ۶۸ کنکور سراسری هنر',
+        en: 'Rank 68, National Art Entrance Exam (2012)',
+      },
+    ],
+  },
+  {
+    fa: 'مقالهٔ پژوهشی',
+    en: 'Research Publication',
+    rows: [
+      {
+        year: '۱۴۰۰',
+        fa: 'خسرویانی، نگین؛ جوادی، شهره. (۱۴۰۰). معرفی و بازشناسی نقش اسلیمی در تزیینات دوران اسلامی (بر اساس نقد کتاب «اسلیمی و نشان‌ها»). مجلهٔ هنر و تمدن شرق، سال ۹، شمارهٔ ۳۴، ۱۷–۳۰. ترجمهٔ انگلیسی این مقاله نیز در همین شماره منتشر شده است.',
+        en: 'Khosraviyani, N. & Javadi, S. (2021). "An Introduction to and Examination of Arabesque Motifs in the Decorations of the Islamic Period (A critique of the book Eslimi and Medallions)." Journal of Art and Civilization of the Orient, Year 9, No. 34, pp. 17–30. An English translation was published in the same issue.',
+      },
+    ],
+  },
+  {
+    fa: 'نمایشگاه‌ها',
+    en: 'Exhibitions',
+    rows: [
+      {
+        year: '۱۴۰۴',
+        fa: 'نمایشگاه گروهی گل و مرغ و تذهیب «هر گلی نو که در جهان آید» — موزه رضا عباسی، تهران',
+        en: 'Group exhibition of Gol-o-Morgh & Illumination "Every New Flower in the World" — Reza Abbasi Museum, Tehran (2025)',
+      },
+      {
+        year: '۱۴۰۴',
+        fa: 'نمایشگاه گروهی آثار گل و مرغ «بهار دلکش» — نگارخانه ندا ایلخانی، تهران',
+        en: 'Group Gol-o-Morgh exhibition "Bahar-e Delkash" — Neda Ilkhani Gallery, Tehran (2025)',
+      },
+      {
+        year: '۱۴۰۳',
+        fa: 'نمایشگاه گروهی اساتید و هنرمندان برتر معاصر در خوشنویسی، گل و مرغ، تذهیب، قالی و آیینه‌کاری «جشن هنر آذرگون» — پردیس موزه‌ای دفینه، تهران',
+        en: 'Group exhibition of leading contemporary masters in calligraphy, Gol-o-Morgh, illumination, carpet, and mirror-work "Azargoun Art Festival" — Dafineh Museum Complex, Tehran (2024)',
+      },
+      {
+        year: '۱۳۹۹',
+        fa: 'نمایشگاه گروهی گل و مرغ، نگارگری و تذهیب «مکتب عشق» — گالری نقش‌خانهٔ حوزهٔ هنری اصفهان',
+        en: 'Group exhibition of Gol-o-Morgh, Miniature and Illumination "School of Love" — Naqshkhaneh Gallery, Isfahan Art Center (2020)',
+      },
+      {
+        year: '۱۳۹۶',
+        fa: 'نخستین نمایشگاه بین‌المللی سیمرغ، تهران',
+        en: '1st International Simorgh Exhibition, Tehran (2017)',
+      },
+      {
+        year: '۱۳۹۵',
+        fa: 'نمایشگاه صنایع‌دستی سازمان میراث فرهنگی و صنایع‌دستی و گردشگری، تهران',
+        en: 'Handicrafts Exhibition — Cultural Heritage, Handicrafts and Tourism Organization, Tehran (2016)',
+      },
+    ],
+  },
+  {
+    fa: 'فعالیت‌ها',
+    en: 'Activities & Recognition',
+    rows: [
+      {
+        year: '۱۴۰۱',
+        fa: 'تصویرسازی ۴ عنوان کتاب کودک — انتشارات تفکر طلایی',
+        en: 'Illustration of 4 children\'s books — Tafakor Talayee Publishing (2022)',
+      },
+      {
+        year: '۱۳۹۷',
+        fa: 'برگزاری ورکشاپ تذهیب — باغ کتاب تهران',
+        en: 'Illumination workshop instructor — Bagh-e Ketab (Book Garden), Tehran (2018)',
+      },
+      {
+        year: '۱۳۹۷',
+        fa: 'گواهی شرکت در کارگاه «نقش کارآفرینی در توسعهٔ گردشگری» — دومین همایش بانوان کارآفرین در گردشگری و صنایع‌دستی، سازمان میراث فرهنگی، تهران',
+        en: 'Certificate: workshop "The Role of Entrepreneurship in Tourism Development" — 2nd Women Entrepreneurs Symposium, Cultural Heritage Organization, Tehran (2018)',
+      },
+      {
+        year: '۱۳۹۷',
+        fa: 'گواهی شرکت در دورهٔ آموزشی صنایع‌دستی کارآفرینی در هنر دوخت‌های سنتی (مرصع‌دوزی) — سازمان میراث فرهنگی، تهران',
+        en: 'Certificate: handicrafts entrepreneurship course in traditional embroidery (Morassa\'-doozi) — Cultural Heritage Organization, Tehran (2018)',
+      },
+      {
+        year: '۱۳۹۴',
+        fa: 'برگزیدهٔ اولین فراخوان طراحی جواهر — دانشگاه تهران',
+        en: 'Selected, 1st Jewelry Design Open Call — University of Tehran (2015)',
+      },
+      {
+        year: '۱۳۹۵',
+        fa: 'مشارکت در برگزاری نمایشگاه دانشجویان و دانش‌آموختگان صنایع‌دستی و هنرهای سنتی دانشگاه الزهرا (س) — سازمان میراث فرهنگی، تهران',
+        en: 'Co-organizer, Alzahra University handicrafts & traditional arts student exhibition — Cultural Heritage Organization, Tehran (2016)',
+      },
+    ],
+  },
+  {
+    fa: 'سوابق شغلی',
+    en: 'Professional Experience',
+    rows: [
+      {
+        year: '۱۴۰۲ – تاکنون',
+        fa: 'فریلنسر در حوزهٔ گرافیک و هوش مصنوعی',
+        en: 'Freelance Graphic & AI Designer (2023 – present)',
+      },
+      {
+        year: '۱۴۰۲',
+        fa: 'مدیر داخلی و طراح گرافیک — خانهٔ خلاق (ب)',
+        en: 'Internal Manager & Graphic Designer — Khaneh Khallaq (B) (2023)',
+      },
+      {
+        year: '۱۴۰۰–۱۴۰۲',
+        fa: 'طراح گرافیک ارشد — انتشارات نیلوفر',
+        en: 'Senior Graphic Designer — Niloofar Publishing (2021–2023)',
+      },
+      {
+        year: '۱۳۹۸–۱۳۹۹',
+        fa: 'طراح گرافیک — شرکت AiGrow',
+        en: 'Graphic Designer — AiGrow (2019–2020)',
+      },
+      {
+        year: '۱۳۹۶–۱۳۹۸',
+        fa: 'طراح گرافیک — انتشارات زعفران',
+        en: 'Graphic Designer — Zafaran Publishing (2017–2019)',
+      },
+      {
+        year: '۱۳۹۶',
+        fa: 'طراح گرافیک — شرکت طراحی فرش سپهر',
+        en: 'Graphic Designer — Sepehr Carpet Design (2017)',
+      },
+      {
+        year: '۱۳۹۵',
+        fa: 'طراح گرافیک — شرکت زورانی',
+        en: 'Graphic Designer — Zorani (2016)',
+      },
+    ],
+  },
+];
 ---
-<Layout title="افتخارات — نگین خسرویانی" description="افتخارات و جوایز نگین خسرویانی.">
-  <section class="page-header"><h1 class="page-header__title">افتخارات</h1></section>
-  <article class="project">
-    <p class="project__placeholder">فهرست افتخارات و جوایز به‌زودی منتشر می‌شود.</p>
+
+<Layout title="افتخارات — نگین خسرویانی" description="رزومه، تحصیلات، مقاله، نمایشگاه‌ها و سوابق حرفه‌ای نگین خسرویانی.">
+  <section class="page-header">
+    <h1 class="page-header__title">افتخارات</h1>
+  </section>
+
+  <article class="cv">
+    {sections.map((sec) => (
+      <section class="cv__section">
+        <h2 class="cv__heading" data-fa={sec.fa} data-en={sec.en}>{sec.fa}</h2>
+        <ul class="cv__list">
+          {sec.rows.map((row) => (
+            <li class="cv__row">
+              <span class="cv__year">{row.year}</span>
+              <span class="cv__entry" data-fa={row.fa} data-en={row.en}>{row.fa}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
   </article>
 </Layout>
+
+<style>
+  .cv {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding-top: clamp(1rem, 3vh, 2rem);
+  }
+  .cv__section {
+    margin-bottom: clamp(2.5rem, 5vh, 3.5rem);
+  }
+  .cv__heading {
+    margin: 0 0 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 0.6rem;
+  }
+  .cv__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .cv__row {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    color: color-mix(in oklab, var(--ink) 88%, transparent);
+    line-height: 1.75;
+  }
+  .cv__year {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .cv__entry {
+    font-size: 0.96rem;
+  }
+
+  @media (max-width: 640px) {
+    .cv__row {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+    .cv__year { font-size: 0.82rem; }
+  }
+</style>

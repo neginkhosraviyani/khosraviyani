@@ -7,45 +7,68 @@ import social from "../content/social.json";
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "نگین خسرویانی",
+  "name": "Negin Khosraviyani",
   "url": Astro.site?.href,
   "jobTitle": "Artist",
-  "sameAs": [social.linkedin, social.github].filter(Boolean),
+  "alumniOf": "University of Tehran",
+  "knowsAbout": [
+    "Persian Miniature Painting",
+    "Negargari",
+    "Graphic Design",
+    "Artificial Intelligence Art",
+    "Zoroastrian Embroidery"
+  ],
+  "sameAs": [(social as any).linkedin, (social as any).instagram, (social as any).github].filter(Boolean),
 };
+
+// Bio paragraphs — both Persian and English so the FA/EN toggle handles them.
+const bio = [
+  {
+    fa: 'دارای مدرک کارشناسی صنایع‌دستی و کارشناسی‌ارشد پژوهش هنر از دانشگاه تهران هستم. تحصیلات دانشگاهی و تجربه حرفه‌ای من بر هنر ایران متمرکز است، با تخصصی ویژه در نگارگری.',
+    en: 'I hold a Bachelor’s degree in Handicrafts and a Master’s degree in Art Research from the University of Tehran. My academic education and professional experience are centered on Iranian art, with a specialized focus on Persian miniature painting (Negargari).',
+  },
+  {
+    fa: 'در کنار فعالیت در هنرهای سنتی، در حوزهٔ طراحی گرافیک نیز فعال هستم و دانش هنری خود را در بسترهای بصری و تجاری معاصر به کار می‌گیرم. این تخصص دوگانه به من امکان می‌دهد آثاری خلق کنم که هم ریشه در فرهنگ دارند و هم برای مخاطبان امروز جذاب و مرتبط هستند.',
+    en: 'In parallel with my work in traditional arts, I am active in the field of graphic design, where I apply artistic knowledge to contemporary visual and commercial contexts. This dual expertise allows me to create works that are both culturally rooted and visually relevant to modern audiences.',
+  },
+  {
+    fa: 'به‌عنوان هنرمندی چندرشته‌ای، به تلفیق نگارگری ایرانی، طراحی گرافیک، هوش مصنوعی (ComfyUI) و سوزن‌دوزی زرتشتی می‌پردازم. با ترکیب صنایع‌دستی سنتی با ابزارهای دیجیتال نوین، بیان‌های هنری نوآورانه‌ای را توسعه می‌دهم و در عین حال پیوند عمیقی با میراث فرهنگی ایران حفظ می‌کنم.',
+    en: 'As a multidisciplinary artist, I explore the integration of Persian miniature painting, graphic design, artificial intelligence (ComfyUI), and Zoroastrian embroidery. By combining traditional craftsmanship with modern digital tools, I develop innovative artistic expressions while maintaining a strong connection to Iranian cultural heritage.',
+  },
+  {
+    fa: 'کار من بر گسترش امکان‌های هنر ایرانی از طریق رویکرد میان‌رشته‌ای متمرکز است، تا این هنر هم در فضای داخلی و هم در عرصهٔ بین‌المللی قابل‌دسترس و معنادار باشد.',
+    en: 'My work is focused on expanding the possibilities of Iranian art through interdisciplinary practice, making it accessible and meaningful in both local and international contexts.',
+  },
+];
 ---
 
 <Layout
   title="دربارهٔ من — نگین خسرویانی"
-  description="معرفی نگین خسرویانی، هنرمند چندرشته‌ای در حوزهٔ هوش مصنوعی، نگارگری ایرانی، گل و مرغ و طراحی گرافیک."
+  description="معرفی نگین خسرویانی، هنرمند چندرشته‌ای — نگارگری ایرانی، طراحی گرافیک و هوش مصنوعی."
 >
   <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(personJsonLd)} />
   <article class="about">
     <div class="about__content">
       <header class="about__header">
-        <p class="about__eyebrow">دربارهٔ من</p>
-        <h1 class="about__name">نگین خسرویانی</h1>
+        <p class="about__eyebrow" data-fa="دربارهٔ من" data-en="About me">دربارهٔ من</p>
+        <h1 class="about__name" data-fa="نگین خسرویانی" data-en="Negin Khosraviyani">نگین خسرویانی</h1>
       </header>
 
       <section class="about__statement" aria-label="معرفی">
-        <p>
-          هنرمندی چندرشته‌ای که میان سنت و فناوری، میان نگارگری ایرانی و هوش مصنوعی،
-          و میان زبان گل و مرغ و طراحی گرافیک معاصر در حرکت است.
-        </p>
-        <p>
-          این پورتفولیو در حال شکل‌گیری است و به‌زودی با آثار کامل از هر چهار بخش
-          به‌روزرسانی می‌شود. تا آن زمان، کارت‌های مجموعه به‌صورت زمان‌بند نگه‌داشته شده‌اند.
-        </p>
+        {bio.map((p) => (
+          <p data-fa={p.fa} data-en={p.en}>{p.fa}</p>
+        ))}
       </section>
 
       <nav class="about__work-links" aria-label="مشاهدهٔ آثار بر اساس بخش">
-        <h2 class="about__section-label">آثار</h2>
+        <h2 class="about__section-label" data-fa="آثار" data-en="Works">آثار</h2>
         <ul class="about__list about__list--links">
-          <li><a href={withBase('/ai/')}>هوش مصنوعی</a></li>
-          <li><a href={withBase('/motion/')}>موشن گرافیک</a></li>
-          <li><a href={withBase('/graphic/')}>گرافیک</a></li>
-          <li><a href={withBase('/art/')}>آثار هنری</a></li>
-          <li><a href={withBase('/exhibitions/')}>نمایشگاه</a></li>
-          <li><a href={withBase('/honors/')}>افتخارات</a></li>
+          <li><a href={withBase('/ai/')}        data-fa="هوش مصنوعی"  data-en="AI">هوش مصنوعی</a></li>
+          <li><a href={withBase('/motion/')}    data-fa="موشن گرافیک" data-en="Motion Graphics">موشن گرافیک</a></li>
+          <li><a href={withBase('/graphic/')}   data-fa="گرافیک"      data-en="Graphic Design">گرافیک</a></li>
+          <li><a href={withBase('/art/')}       data-fa="آثار هنری"   data-en="Artworks">آثار هنری</a></li>
+          <li><a href={withBase('/exhibitions/')} data-fa="نمایشگاه"  data-en="Exhibitions">نمایشگاه</a></li>
+          <li><a href={withBase('/honors/')}    data-fa="افتخارات"    data-en="Honors">افتخارات</a></li>
         </ul>
       </nav>
     </div>
@@ -58,34 +81,27 @@ const personJsonLd = {
     padding-top: clamp(2rem, 6vh, 4rem);
     padding-bottom: 6rem;
   }
-
-  .about__header {
-    margin-bottom: clamp(2rem, 5vh, 3rem);
-  }
-
+  .about__header { margin-bottom: clamp(2rem, 5vh, 3rem); }
   .about__eyebrow {
     margin: 0 0 0.5rem;
     font-size: 0.82rem;
     letter-spacing: 0.08em;
-    color: color-mix(in oklab, #1B1B1B 55%, transparent);
+    color: color-mix(in oklab, var(--ink) 55%, transparent);
+    text-transform: uppercase;
   }
-
   .about__name {
     margin: 0;
     font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 700;
-    color: #1B1B1B;
+    font-weight: 600;
+    color: var(--ink);
   }
 
-  .about__statement {
-    margin-bottom: clamp(2.5rem, 6vh, 4rem);
-  }
-
+  .about__statement { margin-bottom: clamp(2.5rem, 6vh, 4rem); }
   .about__statement p {
     margin: 0 0 1.4em;
-    font-size: clamp(1rem, 1.8vw, 1.1rem);
-    line-height: 1.9;
-    color: color-mix(in oklab, #1B1B1B 80%, transparent);
+    font-size: clamp(1rem, 1.6vw, 1.08rem);
+    line-height: 1.95;
+    color: color-mix(in oklab, var(--ink) 82%, transparent);
     max-width: 38rem;
   }
 
@@ -93,8 +109,9 @@ const personJsonLd = {
     margin: 0 0 1rem;
     font-size: 0.82rem;
     letter-spacing: 0.08em;
-    color: color-mix(in oklab, #1B1B1B 50%, transparent);
+    color: color-mix(in oklab, var(--ink) 50%, transparent);
     font-weight: 500;
+    text-transform: uppercase;
   }
 
   .about__list {
@@ -107,15 +124,18 @@ const personJsonLd = {
   }
 
   .about__list--links a {
-    color: color-mix(in oklab, #1B1B1B 78%, transparent);
+    color: color-mix(in oklab, var(--ink) 78%, transparent);
     text-decoration: none;
-    border-bottom: 1px solid color-mix(in oklab, #1B1B1B 22%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 22%, transparent);
     padding-bottom: 1px;
     transition: color 0.18s ease, border-color 0.18s ease;
   }
-
   .about__list--links a:hover {
-    color: #1B1B1B;
-    border-color: #1B1B1B;
+    color: var(--accent);
+    border-color: var(--accent);
   }
+
+  /* Switch to English typography rhythm in LTR mode */
+  html[dir="ltr"] .about__statement p { text-align: left; }
+  html[dir="rtl"] .about__statement p { text-align: right; }
 </style>

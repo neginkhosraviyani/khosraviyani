@@ -4,16 +4,16 @@ import { normalizePathname, withBase } from "../scripts/paths";
 import social from "../content/social.json";
 
 const pathname = normalizePathname(Astro.url.pathname);
-const homeHref = withBase("/");
+const aiHref = withBase("/ai/");
 
 const sections = [
-  { href: withBase('/ai/'),          label: 'هوش مصنوعی' },
-  { href: withBase('/motion/'),      label: 'موشن گرافیک' },
-  { href: withBase('/graphic/'),     label: 'گرافیک' },
-  { href: withBase('/art/'),         label: 'آثار هنری' },
-  { href: withBase('/exhibitions/'), label: 'نمایشگاه' },
-  { href: withBase('/honors/'),      label: 'افتخارات' },
-  { href: withBase('/about/'),       label: 'دربارهٔ من' },
+  { href: withBase('/ai/'),          fa: 'هوش مصنوعی',  en: 'AI' },
+  { href: withBase('/motion/'),      fa: 'موشن گرافیک',  en: 'Motion Graphics' },
+  { href: withBase('/graphic/'),     fa: 'گرافیک',       en: 'Graphic Design' },
+  { href: withBase('/art/'),         fa: 'آثار هنری',    en: 'Artworks' },
+  { href: withBase('/exhibitions/'), fa: 'نمایشگاه',     en: 'Exhibitions' },
+  { href: withBase('/honors/'),      fa: 'افتخارات',     en: 'Honors' },
+  { href: withBase('/about/'),       fa: 'دربارهٔ من',   en: 'About' },
 ];
 
 const isActive = (href: string) => {
@@ -26,11 +26,12 @@ const socialLinks = [
   { key: 'instagram', label: 'اینستاگرام', url: (social as any).instagram ?? '' },
   { key: 'youtube',   label: 'یوتیوب',     url: (social as any).youtube ?? '' },
   { key: 'telegram',  label: 'تلگرام',     url: (social as any).telegram ?? '' },
+  { key: 'linkedin',  label: 'لینکدین',    url: (social as any).linkedin ?? '' },
   { key: 'email',     label: 'ایمیل',      url: (social as any).email ? `mailto:${(social as any).email}` : '' },
 ];
 ---
 
-<!-- Language toggle: top-LEFT corner (the empty mockup square) -->
+<!-- Language toggle: top-LEFT corner -->
 <div class="lang-toggle" aria-label="انتخاب زبان">
   <button type="button" data-lang="fa" class="lang-toggle__btn lang-toggle__btn--active">فا</button>
   <span class="lang-toggle__sep">|</span>
@@ -38,17 +39,22 @@ const socialLinks = [
 </div>
 
 <aside class="sidebar" aria-label="منوی اصلی">
-  <a href={homeHref} class="sidebar__brand">
-    <span class="sidebar__logo" aria-hidden="true">N</span>
-    <span class="sidebar__name">نگین خسرویانی</span>
+  <a href={aiHref} class="sidebar__brand">
+    <img src={withBase('/logo.png')} alt="نگین خسرویانی" class="sidebar__logo" loading="eager" decoding="async" />
+    <span class="sidebar__name" data-fa="نگین خسرویانی" data-en="Negin Khosraviyani">نگین خسرویانی</span>
   </a>
 
   <nav class="sidebar__nav">
     <ul>
       {sections.map((s) => (
         <li>
-          <a href={s.href} class:list={['sidebar__link', isActive(s.href) && 'sidebar__link--active']}>
-            {s.label}
+          <a
+            href={s.href}
+            class:list={['sidebar__link', isActive(s.href) && 'sidebar__link--active']}
+            data-fa={s.fa}
+            data-en={s.en}
+          >
+            {s.fa}
           </a>
         </li>
       ))}
@@ -74,6 +80,9 @@ const socialLinks = [
         {s.key === 'telegram' && (
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.24 3.64 11.95c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42Z"/></svg>
         )}
+        {s.key === 'linkedin' && (
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.02H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+        )}
         {s.key === 'email' && (
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l9 5.6 9-5.6V7H3Zm0 2.6V17h18V9.6l-9 5.6-9-5.6Z"/></svg>
         )}
@@ -81,6 +90,85 @@ const socialLinks = [
     ))}
   </div>
 </aside>
+
+<script is:inline>
+  (() => {
+    const STORAGE_KEY = 'site-lang';
+    // Page-content translation dictionary — keyed by Persian text
+    // so any text matching a key gets swapped to English.
+    const dict = {
+      'هوش مصنوعی': 'AI',
+      'موشن گرافیک': 'Motion Graphics',
+      'گرافیک': 'Graphic Design',
+      'آثار هنری': 'Artworks',
+      'نمایشگاه': 'Exhibitions',
+      'افتخارات': 'Honors',
+      'دربارهٔ من': 'About',
+      'نگارگری': 'Persian Miniature',
+      'گل و مرغ': 'Gol-o-Morgh',
+      'تذهیب': 'Illumination',
+      'تصویرسازی': 'Illustration',
+      'دیجیتال آرت': 'Digital Art',
+      'صفحه‌آرایی و جلد کتاب': 'Layout & Book Cover',
+      'موزه دفینه تهران': 'Dafineh Museum, Tehran',
+      'موزه رضا عباسی تهران': 'Reza Abbasi Museum, Tehran',
+      'یک زیربخش را انتخاب کنید': 'Select a subsection',
+      'این مجموعه در دست تهیه است و به‌زودی منتشر می‌شود.': 'This collection is in progress and will be published soon.',
+      'گزارش این نمایشگاه در دست تهیه است و به‌زودی منتشر می‌شود.': 'Documentation for this exhibition is in progress and will be published soon.',
+      'نگین خسرویانی': 'Negin Khosraviyani',
+      'هنرمند — هوش مصنوعی، موشن گرافیک، گرافیک و آثار سنتی': 'Artist — AI, motion graphics, graphic design and traditional arts',
+    };
+
+    const apply = (lang) => {
+      const html = document.documentElement;
+      html.lang = lang;
+      html.dir = lang === 'fa' ? 'rtl' : 'ltr';
+
+      // 1. Elements with explicit data-fa/data-en
+      document.querySelectorAll('[data-fa][data-en]').forEach((el) => {
+        const val = el.dataset[lang];
+        if (val) el.textContent = val;
+      });
+
+      // 2. Page headings + sub-cards + placeholder messages: lookup by Persian source
+      //    Skip elements already handled in step 1 (those with data-fa/data-en).
+      const selectors = '.page-header__title, .page-header__lede, .subgrid__card, .subgrid__card-title, .project__placeholder, h1, h2';
+      document.querySelectorAll(selectors).forEach((el) => {
+        if (el.dataset.fa && el.dataset.en) return; // handled in step 1
+        // Remember original Persian text on first run
+        if (!el.dataset.faSrc) el.dataset.faSrc = el.textContent.trim();
+        const original = el.dataset.faSrc;
+        if (lang === 'en' && dict[original]) {
+          el.textContent = dict[original];
+        } else {
+          el.textContent = original;
+        }
+      });
+
+      // 3. Toggle button active state
+      document.querySelectorAll('.lang-toggle__btn').forEach((b) => {
+        b.classList.toggle('lang-toggle__btn--active', b.dataset.lang === lang);
+      });
+
+      try { localStorage.setItem(STORAGE_KEY, lang); } catch {}
+    };
+
+    const start = () => {
+      let saved = 'fa';
+      try { saved = localStorage.getItem(STORAGE_KEY) || 'fa'; } catch {}
+      apply(saved);
+      document.querySelectorAll('.lang-toggle__btn').forEach((b) => {
+        b.addEventListener('click', () => apply(b.dataset.lang));
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start, { once: true });
+    } else {
+      start();
+    }
+  })();
+</script>
 
 <style>
   /* Top-LEFT language toggle (always visual left, regardless of dir) */
@@ -134,16 +222,10 @@ const socialLinks = [
     color: var(--ink);
   }
   .sidebar__logo {
-    width: 70px; height: 70px;
+    width: 90px; height: 90px;
     border-radius: 50%;
-    background: #3FA9F5;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.6rem;
-    font-family: 'Vazirmatn', sans-serif;
+    object-fit: cover;
+    display: block;
   }
   .sidebar__name { font-size: 0.95rem; font-weight: 500; }
 
@@ -154,7 +236,7 @@ const socialLinks = [
   }
   .sidebar__link {
     display: block;
-    background: #3FA9F5;
+    background: #1FA98A;
     color: white;
     text-align: center;
     text-decoration: none;
@@ -164,8 +246,8 @@ const socialLinks = [
     font-weight: 500;
     transition: background .15s, transform .15s;
   }
-  .sidebar__link:hover { background: #2196E8; transform: translateY(-1px); }
-  .sidebar__link--active { background: #1A82C9; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4); }
+  .sidebar__link:hover { background: #178F75; transform: translateY(-1px); }
+  .sidebar__link--active { background: #117862; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4); }
 
   .sidebar__social {
     display: flex;
@@ -173,11 +255,12 @@ const socialLinks = [
     justify-content: center;
     padding-top: 0.5rem;
     border-top: 1px solid var(--hairline);
+    flex-wrap: wrap;
   }
   .sidebar__social-btn {
     width: 32px; height: 32px;
     border-radius: 0.35rem;
-    background: #3FA9F5;
+    background: #1FA98A;
     color: white;
     display: inline-flex;
     align-items: center;
@@ -185,9 +268,9 @@ const socialLinks = [
     text-decoration: none;
     transition: background .15s, transform .15s;
   }
-  .sidebar__social-btn:hover { background: #2196E8; transform: translateY(-1px); }
+  .sidebar__social-btn:hover { background: #178F75; transform: translateY(-1px); }
   .sidebar__social-btn--empty {
-    background: color-mix(in oklab, #3FA9F5 35%, transparent);
+    background: color-mix(in oklab, #1FA98A 35%, transparent);
     pointer-events: none;
   }
 

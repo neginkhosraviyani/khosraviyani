@@ -1,0 +1,17 @@
+{
+  "title": "موشن گرافیک",
+  "slug": "collection",
+  "displayDate": "۱۴۰۴",
+  "cover": "Comp 1.mp4",
+  "media": [
+    { "type": "video", "src": "Comp 1.mp4" },
+    { "type": "video", "src": "Khayyam Neyshabur Commemoration Day.mp4" },
+    { "type": "video", "src": "Motion graphics for book  (1).mp4" },
+    { "type": "video", "src": "Motion graphics for book  (2).mp4" },
+    { "type": "video", "src": "noruz.mp4" },
+    { "type": "video", "src": "روز جهانی تئاتر.mp4" },
+    { "type": "video", "src": "فردوسی.mp4" },
+    { "type": "video", "src": "هوشنگ گلشیری2.mp4" },
+    { "type": "video", "src": "پرفروش ترین 1400.mp4" }
+  ]
+}

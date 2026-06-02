@@ -1,0 +1,20 @@
+{
+  "title": "هوش مصنوعی",
+  "slug": "collection",
+  "displayDate": "۱۴۰۴",
+  "cover": "ComfyUI_00001_.mp4",
+  "media": [
+    { "type": "video", "src": "ComfyUI_00001_.mp4" },
+    { "type": "video", "src": "ComfyUI_00002_.mp4" },
+    { "type": "video", "src": "ComfyUI_00003_.mp4" },
+    { "type": "video", "src": "ComfyUI_00004_.mp4" },
+    { "type": "video", "src": "ComfyUI_00006_.mp4" },
+    { "type": "video", "src": "ComfyUI_00013_.mp4" },
+    { "type": "video", "src": "ComfyUI_00021_.mp4" },
+    { "type": "video", "src": "ComfyUI_00023_.mp4" },
+    { "type": "video", "src": "ComfyUI_00096_.mp4" },
+    { "type": "video", "src": "ComfyUI_00097_.mp4" },
+    { "type": "video", "src": "05_pishi_bazaar_exploring.mp4" },
+    { "type": "video", "src": "07_pishi_pleading_emotional.mp4" }
+  ]
+}

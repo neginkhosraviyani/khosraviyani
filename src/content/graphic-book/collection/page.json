@@ -1,0 +1,9 @@
+{
+  "title": "صفحه‌آرایی و جلد کتاب",
+  "slug": "collection",
+  "displayDate": "۱۴۰۴",
+  "cover": "cover 1.jpg",
+  "media": [
+    { "type": "image", "src": "cover 1.jpg" }
+  ]
+}

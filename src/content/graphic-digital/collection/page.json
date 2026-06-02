@@ -1,0 +1,14 @@
+{
+  "title": "دیجیتال آرت",
+  "slug": "collection",
+  "displayDate": "۱۴۰۴",
+  "cover": "17.jpg",
+  "media": [
+    { "type": "image", "src": "17.jpg" },
+    { "type": "image", "src": "22.jpg" },
+    { "type": "image", "src": "24.jpg" },
+    { "type": "image", "src": "25.jpg" },
+    { "type": "image", "src": "28.jpg" },
+    { "type": "image", "src": "فئودور داستایفسکی 2.jpg" }
+  ]
+}

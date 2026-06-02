@@ -1,0 +1,15 @@
+{
+  "title": "تذهیب",
+  "slug": "collection",
+  "displayDate": "۱۴۰۴",
+  "cover": "1.jpg",
+  "media": [
+    { "type": "image", "src": "1.jpg" },
+    { "type": "image", "src": "2-.jpg" },
+    { "type": "image", "src": "2.jpg" },
+    { "type": "image", "src": "3-.jpg" },
+    { "type": "image", "src": "3.jpg" },
+    { "type": "image", "src": "4-.jpg" },
+    { "type": "image", "src": "4.jpg" }
+  ]
+}
