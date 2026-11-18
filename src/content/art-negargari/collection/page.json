@@ -4,12 +4,34 @@
   "displayDate": "۱۴۰۴",
   "cover": "11.jpg",
   "media": [
-    { "type": "image", "src": "11.jpg" },
-    { "type": "image", "src": "12.jpg" },
-    { "type": "image", "src": "13.jpg" },
-    { "type": "image", "src": "15.jpg" },
-    { "type": "image", "src": "16.jpg" },
-    { "type": "image", "src": "17.jpg" },
-    { "type": "image", "src": "18.jpg" }
-  ]
+    {
+      "type": "image",
+      "src": "11.jpg"
+    },
+    {
+      "type": "image",
+      "src": "12.jpg"
+    },
+    {
+      "type": "image",
+      "src": "13.jpg"
+    },
+    {
+      "type": "image",
+      "src": "15.jpg"
+    },
+    {
+      "type": "image",
+      "src": "16.jpg"
+    },
+    {
+      "type": "image",
+      "src": "17.jpg"
+    },
+    {
+      "type": "image",
+      "src": "18.jpg"
+    }
+  ],
+  "description": "مجموعه نگارگری ایرانی نگین خسرویانی؛ مشاهده آثار و جزئیات تصویری این مجموعه در پورتفولیوی هنرمند."
 }

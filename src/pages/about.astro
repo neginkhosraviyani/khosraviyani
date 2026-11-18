@@ -7,6 +7,7 @@ import social from "../content/social.json";
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://khosraviyani.ir/#artist",
   "name": "Negin Khosraviyani",
   "url": Astro.site?.href,
   "jobTitle": "Artist",
@@ -46,7 +47,7 @@ const bio = [
   title="دربارهٔ من — نگین خسرویانی"
   description="معرفی نگین خسرویانی، هنرمند چندرشته‌ای — نگارگری ایرانی، طراحی گرافیک و هوش مصنوعی."
 >
-  <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(personJsonLd)} />
+  <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify({ "@context": "https://schema.org", "@type": "ProfilePage", "url": "https://khosraviyani.ir/about/", "mainEntity": personJsonLd }).replace(/</g, '\\u003c')} />
   <article class="about">
     <div class="about__content">
       <header class="about__header">

@@ -1,5 +1,6 @@
 ---
 // src/layouts/Layout.astro
+import social from "../content/social.json";
 import NavBar from "../components/Navbar.astro";
 import { withBase } from "../scripts/paths";
 import "../styles/global.css";
@@ -11,7 +12,7 @@ interface Props {
   lang?: 'fa' | 'en';
 }
 
-const SITE_TITLE = "نگین خسرویانی";
+const SITE_TITLE = "نگین خسرویانی | نگارگری، طراحی گرافیک و هنر دیجیتال";
 const SITE_DESCRIPTION = "پورتفولیوی نگین خسرویانی — هوش مصنوعی، موشن گرافیک، گرافیک، آثار هنری، نمایشگاه‌ها، افتخارات.";
 
 const {
@@ -31,6 +32,30 @@ const defaultOgImage = Astro.site
   ? new URL(withBase('/og-default.png'), Astro.site).href
   : withBase('/og-default.png');
 const resolvedOgImage = ogImage || defaultOgImage;
+const rootUrl = Astro.site?.href || 'https://khosraviyani.ir/';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person', '@id': rootUrl + '#artist',
+      name: 'نگین خسرویانی', alternateName: 'Negin Khosraviyani',
+      url: rootUrl, jobTitle: 'هنرمند و طراح گرافیک',
+      sameAs: [social.linkedin, social.youtube, social.telegram].filter(Boolean)
+    },
+    {
+      '@type': 'WebSite', '@id': rootUrl + '#website',
+      name: 'نگین خسرویانی', alternateName: 'Negin Khosraviyani',
+      url: rootUrl, inLanguage: lang, publisher: { '@id': rootUrl + '#artist' }
+    },
+    {
+      '@type': 'WebPage', '@id': canonicalUrl + '#webpage',
+      url: canonicalUrl, name: title, description, inLanguage: lang,
+      isPartOf: { '@id': rootUrl + '#website' },
+      about: { '@id': rootUrl + '#artist' }
+    }
+  ]
+};
+const serializedStructuredData = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 ---
 <!DOCTYPE html>
 <html lang={lang} dir={dir}>
@@ -43,6 +68,10 @@ const resolvedOgImage = ogImage || defaultOgImage;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={resolvedOgImage} />
+    <meta name="robots" content="max-image-preview:large" />
+    <meta property="og:locale" content={lang === 'fa' ? 'fa_IR' : 'en_US'} />
+    <meta property="og:site_name" content="نگین خسرویانی" />
+    <script is:inline type="application/ld+json" set:html={serializedStructuredData} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta name="twitter:card" content="summary_large_image" />

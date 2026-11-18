@@ -44,6 +44,11 @@ for (const { section, label, hrefBase } of sections) {
     <p class="page-header__lede">هنرمند — هوش مصنوعی، موشن گرافیک، گرافیک و آثار سنتی</p>
   </section>
 
+  <section class="page-header" aria-label="معرفی هنرمند">
+    <p>نگین خسرویانی هنرمندی چندرشته‌ای در زمینهٔ نگارگری ایرانی، طراحی گرافیک، موشن گرافیک و هنر هوش مصنوعی است. در این پورتفولیو می‌توانید مجموعه‌های نگارگری، گل و مرغ، تذهیب، تصویرسازی، دیجیتال آرت و طراحی جلد کتاب را ببینید.</p>
+    <p>با <a href={withBase('/about/')}>زندگی و مسیر هنری نگین خسرویانی</a> آشنا شوید یا <a href={withBase('/contact/')}>راه‌های ارتباط با هنرمند</a> را ببینید.</p>
+  </section>
+
   <div class="gallery">
     {entries.map((e) => (
       <a class="gallery__item" href={e.href}>

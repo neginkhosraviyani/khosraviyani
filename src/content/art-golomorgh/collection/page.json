@@ -4,17 +4,54 @@
   "displayDate": "۱۴۰۴",
   "cover": "10-1 (1).jpg",
   "media": [
-    { "type": "image", "src": "10-1 (1).jpg" },
-    { "type": "image", "src": "10-1 (2).jpg" },
-    { "type": "image", "src": "10.jpg" },
-    { "type": "image", "src": "11.jpg" },
-    { "type": "image", "src": "2.jpg" },
-    { "type": "image", "src": "3.jpg" },
-    { "type": "image", "src": "4.jpg" },
-    { "type": "image", "src": "5.jpg" },
-    { "type": "image", "src": "6.jpg" },
-    { "type": "image", "src": "7.jpg" },
-    { "type": "image", "src": "8.jpg" },
-    { "type": "image", "src": "9.jpg" }
-  ]
+    {
+      "type": "image",
+      "src": "10-1 (1).jpg"
+    },
+    {
+      "type": "image",
+      "src": "10-1 (2).jpg"
+    },
+    {
+      "type": "image",
+      "src": "10.jpg"
+    },
+    {
+      "type": "image",
+      "src": "11.jpg"
+    },
+    {
+      "type": "image",
+      "src": "2.jpg"
+    },
+    {
+      "type": "image",
+      "src": "3.jpg"
+    },
+    {
+      "type": "image",
+      "src": "4.jpg"
+    },
+    {
+      "type": "image",
+      "src": "5.jpg"
+    },
+    {
+      "type": "image",
+      "src": "6.jpg"
+    },
+    {
+      "type": "image",
+      "src": "7.jpg"
+    },
+    {
+      "type": "image",
+      "src": "8.jpg"
+    },
+    {
+      "type": "image",
+      "src": "9.jpg"
+    }
+  ],
+  "description": "مجموعه گل و مرغ نگین خسرویانی؛ آثاری از هنر ایرانی با موضوع گل و پرنده، همراه با تصاویر آثار در گالری."
 }

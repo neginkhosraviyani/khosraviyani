@@ -4,6 +4,10 @@
   "displayDate": "۱۴۰۴",
   "cover": "Dafineh Museum.jpg",
   "media": [
-    { "type": "image", "src": "Dafineh Museum.jpg" }
-  ]
+    {
+      "type": "image",
+      "src": "Dafineh Museum.jpg"
+    }
+  ],
+  "description": "تصویر مجموعه نمایشگاهی نگین خسرویانی در موزه دفینه تهران، در بخش نمایشگاه‌های پورتفولیوی هنرمند."
 }

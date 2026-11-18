@@ -4,6 +4,10 @@
   "displayDate": "۱۴۰۴",
   "cover": "cover 1.jpg",
   "media": [
-    { "type": "image", "src": "cover 1.jpg" }
-  ]
+    {
+      "type": "image",
+      "src": "cover 1.jpg"
+    }
+  ],
+  "description": "نمونه صفحه‌آرایی و طراحی جلد کتاب نگین خسرویانی؛ مشاهده اثر در مجموعه گرافیک و هنر کتاب."
 }
