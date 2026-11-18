@@ -6,6 +6,7 @@ const overrides=path.join(__dirname,'sarvok-overrides');
 for(const file of ['cms.js','worker.js','test.mjs','seo-test.mjs']){
   fs.copyFileSync(path.join(overrides,file),path.join(base,file));
 }
+fs.copyFileSync(path.join(overrides,'catalog.js'),path.join(base,'public','catalog.js'));
 const configPath=path.join(base,'wrangler.jsonc');
 const config=JSON.parse(fs.readFileSync(configPath,'utf8'));
 config.assets.run_worker_first=[...new Set([...config.assets.run_worker_first,'/collection','/collection/'])];

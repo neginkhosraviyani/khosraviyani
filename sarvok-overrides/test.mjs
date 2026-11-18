@@ -27,11 +27,13 @@ try{
  page=await (await request('/')).text();assert.match(page,/href="\/product\/new-sarv\/"/);assert.match(page,/سروک تست/);assert.match(await (await request('/robots.txt')).text(),/Sitemap:/);
  console.log('PASS: blog drafts/publication, XSS escaping, sitemap images, SEO settings/conflicts, SSR catalog, canonical redirects, product and article schema');
 
+ const marketplaceHTML=await (await request('/product/new-sarv/')).text();assert.match(marketplaceHTML,/خرید از دیجی‌کالا/);assert.doesNotMatch(marketplaceHTML,/id="add"|id="bag"|id="cart"/);assert.match(marketplaceHTML,/src="\/catalog.js"/);assert.match(marketplaceHTML,/https:\/\/www.digikala.com\/seller\/EHZHR\//);
  let collection=await request('/collection/');assert.equal(collection.status,200);const collectionHTML=await collection.text();assert.match(collectionHTML,/ItemList/);assert.match(collectionHTML,/new-sarv/);assert.equal((await request('/collection')).status,301);
  for(const slug of ['vest-size-guide','garment-care-guide']){const guide=await request('/blog/'+slug+'/');assert.equal(guide.status,200);assert.match(await guide.text(),/BlogPosting/);}
  await request('/api/logout','POST');assert.equal((await request('/api/admin/products')).status,401);cookie='';r=await request('/api/login','POST',{password:'test-password-long'});assert.equal(r.status,200);
  console.log('PASS: seeded catalog, authentication, one-time setup, CSRF, edit conflict, drafts, media upload/read, product rendering, logout/login');
 }finally{await mf.dispose();}
+
 
 
 
