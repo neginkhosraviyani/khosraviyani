@@ -48,12 +48,14 @@ for (const { section, label, hrefBase } of sections) {
     {entries.map((e) => (
       <a class="gallery__item" href={e.href}>
         <div class="gallery__thumb-wrap">
-          {e.cover && (
+          {e.cover && (/\.(mp4|webm|ogv)(?:[?#]|$)/i.test(e.cover) ? (
+            <video class="gallery__thumb" src={e.cover} muted playsinline preload="metadata" aria-label={e.title} />
+          ) : (
             <picture>
               {e.coverWebp && <source type="image/webp" srcset={e.coverWebp} />}
               <img class="gallery__thumb" src={e.cover} alt={e.title} loading="lazy" decoding="async" />
             </picture>
-          )}
+          ))}
         </div>
         <h2 class="gallery__title">{e.title}</h2>
         <p class="gallery__caption">{e.sectionLabel}{e.year ? ` — ${e.year}` : ''}</p>
