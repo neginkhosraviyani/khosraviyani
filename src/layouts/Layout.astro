@@ -51,6 +51,13 @@ const resolvedOgImage = ogImage || defaultOgImage;
     <meta name="twitter:image" content={resolvedOgImage} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href={withBase("/favicon.svg")} />
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-XMSGEYHC6X"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XMSGEYHC6X');
+    </script>
     <slot name="head" />
   </head>
   <body>
