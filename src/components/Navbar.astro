@@ -8,6 +8,7 @@ const pathname = normalizePathname(Astro.url.pathname);
 const aiHref = withBase("/ai/");
 
 const sections = [
+  { href: 'https://shop.khosraviyani.ir/', fa: 'فروشگاه', en: 'Shop' },
   { href: lang === 'en' ? '/en/blog/' : withBase('/blog/'), fa: 'وبلاگ', en: 'Blog' },
   { href: withBase('/ai/'),          fa: 'هوش مصنوعی',  en: 'AI' },
   { href: withBase('/motion/'),      fa: 'موشن گرافیک',  en: 'Motion Graphics' },
