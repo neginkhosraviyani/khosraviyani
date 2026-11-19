@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import posts from '../content/blog-restored.json';
+export function getStaticPaths(){return posts.map(post=>({params:{legacyPost:post.slug},props:{post}}));}
+const {post}=Astro.props;
+const schema={'@context':'https://schema.org','@type':'BlogPosting',headline:post.title,description:post.description,mainEntityOfPage:new URL('/'+post.slug+'/',Astro.site).href,author:{'@type':'Person',name:'نگین خسرویانی',url:'https://khosraviyani.ir/about/'},...(post.published?{datePublished:post.published}: {})};
+---
+<Layout title={post.title+' — نگین خسرویانی'} description={post.description}>
+ <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\u003c')} />
+ <article class="restored-post"><nav><a href="/blog/">← همهٔ نوشته‌ها</a></nav><h1>{post.title}</h1><div class="article-body" set:html={post.body} /><footer><a href="/blog/">بازگشت به وبلاگ</a></footer></article>
+</Layout>
+<style>.restored-post{max-width:48rem;margin:0 auto;padding:2rem 0 5rem;line-height:2}.restored-post h1{font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.7}.article-body :global(img){max-width:100%;height:auto}.article-body :global(table){display:block;overflow:auto;max-width:100%}.article-body :global(h2),.article-body :global(h3){margin-top:2rem}.article-body :global(a){overflow-wrap:anywhere}footer{margin-top:3rem}</style>
