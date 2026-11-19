@@ -1,8 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import BlogIndex from '../../components/BlogIndex.astro';
 import posts from '../../content/blog-restored.json';
 ---
-<Layout title="وبلاگ نگین خسرویانی | نوشته‌های هنر ایرانی و تصویرسازی" description="نوشته‌های نگین خسرویانی دربارهٔ نگارگری، تذهیب، گل و مرغ، تصویرسازی و هنر ایرانی.">
- <section class="blog"><h1>وبلاگ نگین خسرویانی</h1><p>نوشته‌ها و پژوهش‌های هنر ایرانی، تصویرسازی و طراحی.</p>{posts.map(post=><article><a href={'/'+post.slug+'/'}><h2>{post.title}</h2></a><p>{post.description}</p><a href={'/'+post.slug+'/'}>خواندن نوشته ←</a></article>)}</section>
-</Layout>
-<style>.blog{max-width:48rem;margin:auto;line-height:1.9}.blog article{padding:1.5rem 0;border-bottom:1px solid var(--hairline)}h2{font-size:1.3rem}</style>
+<BlogIndex posts={posts} lang="fa" />

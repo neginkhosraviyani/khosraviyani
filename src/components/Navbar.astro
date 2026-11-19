@@ -3,11 +3,12 @@
 import { normalizePathname, withBase } from "../scripts/paths";
 import social from "../content/social.json";
 
+const { languageAlternates, lang = 'fa' } = Astro.props;
 const pathname = normalizePathname(Astro.url.pathname);
 const aiHref = withBase("/ai/");
 
 const sections = [
-  { href: withBase('/blog/'), fa: 'وبلاگ', en: 'Blog' },
+  { href: lang === 'en' ? '/en/blog/' : withBase('/blog/'), fa: 'وبلاگ', en: 'Blog' },
   { href: withBase('/ai/'),          fa: 'هوش مصنوعی',  en: 'AI' },
   { href: withBase('/motion/'),      fa: 'موشن گرافیک',  en: 'Motion Graphics' },
   { href: withBase('/graphic/'),     fa: 'گرافیک',       en: 'Graphic Design' },
@@ -34,15 +35,15 @@ const socialLinks = [
 
 <!-- Language toggle: top-LEFT corner -->
 <div class="lang-toggle" aria-label="انتخاب زبان">
-  <button type="button" data-lang="fa" class="lang-toggle__btn lang-toggle__btn--active">فا</button>
+  {languageAlternates ? <a href={languageAlternates.fa} class:list={['lang-toggle__btn', lang === 'fa' && 'lang-toggle__btn--active']} lang="fa" aria-label="فارسی">فا</a> : <button type="button" data-lang="fa" class="lang-toggle__btn lang-toggle__btn--active">فا</button>}
   <span class="lang-toggle__sep">|</span>
-  <button type="button" data-lang="en" class="lang-toggle__btn">EN</button>
+  {languageAlternates ? <a href={languageAlternates.en} class:list={['lang-toggle__btn', lang === 'en' && 'lang-toggle__btn--active']} lang="en" aria-label="English">EN</a> : <button type="button" data-lang="en" class="lang-toggle__btn">EN</button>}
 </div>
 
 <aside class="sidebar" aria-label="منوی اصلی">
   <a href={aiHref} class="sidebar__brand">
     <img src={withBase('/logo.png')} alt="نگین خسرویانی" class="sidebar__logo" loading="eager" decoding="async" />
-    <span class="sidebar__name" data-fa="نگین خسرویانی" data-en="Negin Khosraviyani">نگین خسرویانی</span>
+    <span class="sidebar__name" data-fa="نگین خسرویانی" data-en="Negin Khosraviyani">{lang === 'en' ? 'Negin Khosraviyani' : 'نگین خسرویانی'}</span>
   </a>
 
   <nav class="sidebar__nav">
@@ -52,7 +53,7 @@ const socialLinks = [
           <a
             href={s.href}
             class:list={['sidebar__link', isActive(s.href) && 'sidebar__link--active']}
-            data-fa={s.fa}
+            data-fa={lang === 'en' ? s.en : s.fa}
             data-en={s.en}
           >
             {s.fa}
@@ -155,6 +156,7 @@ const socialLinks = [
     };
 
     const start = () => {
+      if (document.documentElement.hasAttribute('data-translated-page')) return;
       let saved = 'fa';
       try { saved = localStorage.getItem(STORAGE_KEY) || 'fa'; } catch {}
       apply(saved);
@@ -301,3 +303,4 @@ const socialLinks = [
     .lang-toggle__btn { font-size: 0.75rem; }
   }
 </style>
+

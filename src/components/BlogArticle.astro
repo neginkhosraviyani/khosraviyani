@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+const { post, lang = 'fa' } = Astro.props;
+const isEnglish = lang === 'en';
+const faPath = '/' + (post.sourceSlug || post.slug) + '/';
+const enPath = '/en/blog/' + post.enSlug + '/';
+const url = new URL(isEnglish ? enPath : faPath, Astro.site).href;
+const blogPath = isEnglish ? '/en/blog/' : '/blog/';
+const authorName = isEnglish ? 'Negin Khosraviyani' : 'نگین خسرویانی';
+const schema = {'@context':'https://schema.org','@graph':[
+ {'@type':'BlogPosting','@id':url+'#article',headline:post.title,description:post.description,inLanguage:lang,mainEntityOfPage:url,author:{'@type':'Person','@id':'https://khosraviyani.ir/#artist',name:authorName,url:'https://khosraviyani.ir/about/'},...(post.cover?{image:new URL(post.cover,Astro.site).href}:{}),...(post.published?{datePublished:post.published}:{})},
+ {'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:isEnglish?'Blog':'وبلاگ',item:new URL(blogPath,Astro.site).href},{'@type':'ListItem',position:2,name:post.title,item:url}]}
+]};
+---
+<Layout lang={lang} title={(post.seoTitle || post.title)+' — '+authorName} description={post.description} ogImage={post.cover?new URL(post.cover,Astro.site).href:undefined} languageAlternates={{fa:faPath,en:enPath}}>
+ <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\u003c')} />
+ <article class="restored-post"><nav><a href={blogPath}>{isEnglish?'All articles':'همهٔ نوشته‌ها'}</a></nav><header><h1>{post.title}</h1><p>{authorName}</p></header>{post.cover && <img src={post.cover} alt={post.title} loading="eager" decoding="async" style="max-width:100%;height:auto" />}<div class="article-body" set:html={post.body}/><footer><a href={blogPath}>{isEnglish?'Back to the blog':'بازگشت به وبلاگ'}</a></footer></article>
+</Layout>
+<style>.restored-post{max-width:48rem;margin:0 auto;padding:2rem 0 5rem;line-height:2}.restored-post h1{font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.7}.article-body :global(img){max-width:100%;height:auto}.article-body :global(table){display:block;overflow:auto;max-width:100%}.article-body :global(h2),.article-body :global(h3){margin-top:2rem}.article-body :global(a){overflow-wrap:anywhere}footer{margin-top:3rem}</style>

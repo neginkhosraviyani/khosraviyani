@@ -10,6 +10,7 @@ interface Props {
   description?: string;
   ogImage?: string;
   lang?: 'fa' | 'en';
+  languageAlternates?: { fa: string; en: string };
 }
 
 const SITE_TITLE = "نگین خسرویانی | نگارگری، طراحی گرافیک و هنر دیجیتال";
@@ -20,6 +21,7 @@ const {
   description = SITE_DESCRIPTION,
   ogImage,
   lang = 'fa',
+  languageAlternates,
 } = Astro.props;
 
 const dir = lang === 'fa' ? 'rtl' : 'ltr';
@@ -58,7 +60,7 @@ const structuredData = {
 const serializedStructuredData = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 ---
 <!DOCTYPE html>
-<html lang={lang} dir={dir}>
+<html lang={lang} dir={dir} data-translated-page={languageAlternates ? lang : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -79,6 +81,11 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(/</g, '\
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={resolvedOgImage} />
     <link rel="canonical" href={canonicalUrl} />
+    {languageAlternates && <>
+      <link rel="alternate" hreflang="fa" href={new URL(languageAlternates.fa, Astro.site)} />
+      <link rel="alternate" hreflang="en" href={new URL(languageAlternates.en, Astro.site)} />
+      <link rel="alternate" hreflang="x-default" href={new URL(languageAlternates.fa, Astro.site)} />
+    </>}
     <link rel="icon" href={withBase("/favicon.svg")} />
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-XMSGEYHC6X"></script>
     <script is:inline>
@@ -90,10 +97,11 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(/</g, '\
     <slot name="head" />
   </head>
   <body>
-    <a class="skip" href="#main">رفتن به محتوا</a>
-    <NavBar />
+    <a class="skip" href="#main">{lang === 'en' ? 'Skip to content' : 'رفتن به محتوا'}</a>
+    <NavBar lang={lang} languageAlternates={languageAlternates} />
     <main id="main" class="page-shell">
       <slot />
     </main>
   </body>
 </html>
+
