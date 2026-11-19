@@ -1,45 +1,28 @@
-# نگین خسرویانی — پورتفولیو هنری
+# نگین خسرویانی و فروشگاه سروک
 
-پورتفولیوی شخصی نگین خسرویانی در [khosraviyani.ir](https://khosraviyani.ir/).
+- [سایت اصلی](https://khosraviyani.ir/) — منبع در شاخه `main`، ساخته‌شده با Astro و منتشرشده روی Cloudflare.
+- [فروشگاه سروک](https://shop.khosraviyani.ir/) — منبع در شاخه `sarvok-shop`، Worker و دیتابیس D1.
+- [پنل مدیریت فروشگاه](https://shop.khosraviyani.ir/admin/)
 
-Astro 5 static site, Tailwind v4, deploys to Cloudflare Pages. Forked from [MorrisGlr/creative](https://github.com/MorrisGlr/creative) (MIT-licensed code; original artwork content removed).
+## راهنمای ویرایش و انتشار
 
-## Sections
+**[راهنمای کامل فارسی مدیریت سایت‌ها، CMS، مقالات دوزبانه، تصاویر و سئو](CMS-GUIDE.fa.md)**
 
-- `/ai/` — هوش مصنوعی (AI-generated work)
-- `/miniature/` — نگارگری و گل و مرغ (Persian miniature & gol-o-morgh)
-- `/graphic/` — گرافیک (graphic design)
-- `/other/` — سایر (other work)
+راهنما توضیح می‌دهد کدام تغییر از پنل انجام می‌شود و کدام فایل باید در GitHub ویرایش شود. پورتفولیو فعلاً CMS تصویری ندارد. نوشته‌های فارسی و انگلیسی بلاگ در فایل‌های جدا هستند.
 
-## Development
+## توسعه پورتفولیو
 
-```bash
-npm install
+در شاخه `main`:
+```sh
+npm ci
 npm run dev
 npm run build
 npm run preview
 ```
+آلبوم‌ها در `src/content/<section>/<album>/page.json` و فایل‌های رسانه در پوشه `media/` کنار آن هستند. مقاله‌ها در `blog-restored.json` و `blog-english.json` هستند. خروجی build در `dist/` است.
 
-## Adding a project
+## توسعه فروشگاه
 
-Each project lives at `src/content/<section>/<slug>/`:
+شاخه `sarvok-shop` را باز کنید و راهنمای بالا را بخوانید. فایل‌های پایدار تغییرات فروشگاه در `sarvok-overrides/` قرار دارند. داده‌های CMS در D1 هستند و با commit گیت‌هاب ذخیره یا بازیابی نمی‌شوند.
 
-1. Add media files to `src/content/<section>/<slug>/media/`
-2. Add a `page.json` in `src/content/<section>/<slug>/` with `title`, `slug`, `cover`, and a `media` array
-3. The build picks it up automatically; the placeholder card (if any) is replaced
-
-Placeholders (cards shown while work is not yet published) are defined in `src/content/placeholders.ts`.
-
-## Deployment
-
-Static build output goes to `dist/`. Cloudflare Pages settings:
-
-- Build command: `npm run build`
-- Build output directory: `dist`
-- Node version: 20 or 22
-
-The original template targets Cloudflare Workers; the `wrangler.jsonc` has been removed in favor of Pages.
-
-## i18n status
-
-The site renders Persian (RTL) by default. The `Layout.astro` accepts a `lang` prop (`'fa' | 'en'`) and switches `<html lang dir>` accordingly. English routes are not yet built — when added, mirror each page under `/en/...` and pass `lang="en"` to the layout.
+کد اولیه پورتفولیو از [MorrisGlr/creative](https://github.com/MorrisGlr/creative) با مجوز MIT منشعب شده است؛ حقوق محتوای هنری طبق LICENSE-CONTENT است.
